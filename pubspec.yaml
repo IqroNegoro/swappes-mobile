@@ -1,0 +1,32 @@
+name: swappes
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  bloc: ^8.1.4
+  bloc_concurrency: ^0.2.5
+  cached_network_image: ^3.4.0
+  dio: ^5.5.0+1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.6
+  flutter_cache_manager: ^3.4.0
+  flutter_secure_storage: ^9.2.2
+  go_router: ^14.2.3
+  google_fonts: ^6.2.1
+  image_picker: ^1.1.2
+  provider: ^6.1.2
+  skeletonizer: ^1.4.2
+  timeago: ^3.7.0
+
+dev_dependencies:
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
