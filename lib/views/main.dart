@@ -45,7 +45,6 @@ class MainPage extends StatelessWidget {
             return true;
           },
           child: ListView(
-            cacheExtent: 9999999,
             children: [
               ElevatedButton(
                   onPressed: () => context.goNamed("LoginPage"),

@@ -87,10 +87,13 @@ void main() async {
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
+  // final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: MaterialApp.router(
+        // scaffoldMessengerKey: _scaffoldKey,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             fontFamily: GoogleFonts.poppins().fontFamily,

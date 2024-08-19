@@ -85,11 +85,11 @@ class Post extends StatelessWidget {
                 fadeInDuration: Duration.zero,
                 cacheKey: post.images[index]['discordId'],
                 imageUrl: post.images[index]['images'],
+                fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Container(
                   color: Colors.black12,
                   child: const Center(child: Text("Image Cannot Displayed")),
                 ),
-                fit: BoxFit.cover,
                 placeholder: (context, url) => const Skeletonizer(
                   effect: PulseEffect(),
                   child: Bone.square(

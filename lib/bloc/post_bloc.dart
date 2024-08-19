@@ -43,12 +43,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<CreatePost>((event, emit) async {
       emit(CreatingPost());
       try {
-        await Future.delayed(Duration(seconds: 3));
-        // final List<MultipartFile>? images = event.images?.map((image) => MultipartFile.fromFileSync(image.path, filename: image.path.split("/").last)).toList();
-
-        // var post = await dio.post("posts",
-        //     data: FormData.fromMap(
-        //         {'images': images, 'description': event.description}));
+        final List<MultipartFile>? images = event.images?.map((image) => MultipartFile.fromFileSync(image.path, filename: image.path.split("/").last)).toList();
+        var post = await dio.post("posts",
+            data: FormData.fromMap(
+                {'images': images, 'description': event.description}));
         emit(PostCreated());
       } on DioException catch (e) {
         emit(CreatePostError(e.error));
