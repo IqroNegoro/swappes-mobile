@@ -1,12 +1,7 @@
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:swappes/models/services/api.dart';
-import 'package:swappes/providers/profile.dart';
-import 'package:swappes/storage/storage.dart';
+import 'package:swappes/bloc/auth_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -18,6 +13,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
+
     return Scaffold(
         body: Padding(
       padding: const EdgeInsets.all(15.0),
@@ -69,43 +66,28 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              TextButton(
-                style: TextButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50)),
-                onPressed: () async {
-                  try {
-                    var login = await dio.post("login", data: {
-                      "email": emailController.text,
-                      "password": passwordController.text
-                    });
-
-                    await Storage.save(
-                        "accessToken", login.data['accessToken']);
-                    await Storage.save(
-                        "refreshToken", login.data['refreshToken']);
-
-                    dio.options.headers['Authorization'] =
-                        "Bearer ${login.data['accessToken']}";
-
-                    if (context.mounted) {
-                      context.read<Profile>().saveUser(login.data['user']);
-                      context.goNamed("MainPage");
-                    }
-                  } catch (e) {
-                    if (e is DioException) {
-                      log(e.toString());
-                      // if (e.response!.statusCode == 400) {
-                      //   log(e.response!.data.toString());
-                      // }
-                    }
+              BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state is Authenticated) {
+                    context.goNamed("MainPage");
                   }
                 },
-                child: const Text(
-                  "Masuk",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50)),
+                  onPressed: authState is AuthPending
+                      ? null
+                      : () async {
+                          context.read<AuthBloc>().add(SignIn(
+                              emailController.text, passwordController.text));
+                        },
+                  child: const Text(
+                    "Masuk",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
               )

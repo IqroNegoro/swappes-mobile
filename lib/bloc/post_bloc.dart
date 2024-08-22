@@ -17,7 +17,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostLoading());
       try {
         List<PostModel> lists = [];
-        var posts = await dio.get("posts");
+        var posts = await Api.dio.get("posts");
 
         for (var x in posts.data['data']) {
           lists.add(PostModel.fromJson(x));
@@ -33,7 +33,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<LikePost>((event, emit) async {
       emit(LikingPost(event.id));
       try {
-        await dio.post("posts/${event.id}/likes");
+        await Api.dio.post("posts/${event.id}/likes");
         emit(PostLiked());
       } on DioException catch (e) {
         emit(PostError(e.error));
@@ -44,7 +44,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(CreatingPost());
       try {
         final List<MultipartFile>? images = event.images?.map((image) => MultipartFile.fromFileSync(image.path, filename: image.path.split("/").last)).toList();
-        var post = await dio.post("posts",
+        var post = await Api.dio.post("posts",
             data: FormData.fromMap(
                 {'images': images, 'description': event.description}));
         emit(PostCreated());

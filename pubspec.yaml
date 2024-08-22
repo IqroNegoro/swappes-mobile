@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.4.4 <4.0.0'
 
 dependencies:
+  animated_text_kit: ^4.2.2
   bloc: ^8.1.4
   bloc_concurrency: ^0.2.5
   cached_network_image: ^3.4.0

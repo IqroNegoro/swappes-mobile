@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:swappes/models/user.dart';
+import 'package:swappes/storage/storage.dart';
 
 class Profile with ChangeNotifier {
   String? id;
@@ -7,12 +12,33 @@ class Profile with ChangeNotifier {
   String? email;
   Avatar? avatar;
 
-  void saveUser(user) {
+  void saveUser(user) async {
     id = user['_id'];
     name = user['name'];
     email = user['email'];
     avatar = Avatar.fromJson(user['avatar']);
 
+    await Storage.save(
+        "user",
+        json.encode({
+          "id": user['id'],
+          "name": user['name'],
+          "email": user['email'],
+          "avatar": user['avatar'],
+        }));
+
     notifyListeners();
+  }
+
+  void getUser() async {
+    final String? user = await Storage.get("user");
+
+    if (user != null) {
+      final decode = json.decode(user);
+      id = decode['_id'];
+      name = decode['name'];
+      email = decode['email'];
+      avatar = Avatar.fromJson(decode['avatar']);
+    }
   }
 }
