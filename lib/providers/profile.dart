@@ -1,9 +1,7 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:swappes/models/user.dart';
+import 'package:swappes/models/avatar.dart';
 import 'package:swappes/storage/storage.dart';
 
 class Profile with ChangeNotifier {

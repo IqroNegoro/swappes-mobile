@@ -1,4 +1,4 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
+import "package:flutter_animate/flutter_animate.dart";
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,28 +16,35 @@ class SplashScreenUI extends StatelessWidget {
         decoration: const BoxDecoration(color: Colors.white),
         child: Center(
           child: BlocListener<AuthBloc, AuthState>(
-            bloc: AuthBloc()..add(CheckAuthenticated()),
+            bloc: AuthBloc()..add(const AuthEvent.checkAuthenticated()),
             listener: (context, state) {
-              if (state is Authenticated) {
-                context.read<Profile>().saveUser(state.user);
-                context.goNamed("MainPage");
-              } else if (state is AuthError) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(
-                    "Session timeout, please login again",
-                    style: TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  showCloseIcon: true,
-                  backgroundColor: Color(0xFF18191A),
-                ));
-                context.goNamed("LoginPage");
-              }
+              state.maybeWhen(
+                  authenticated: (user) {
+                    context.read<Profile>().saveUser(user);
+                    context.goNamed("MainPage");
+                  },
+                  error: (error) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        "Session timeout, please login again",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      showCloseIcon: true,
+                      backgroundColor: Color(0xFF18191A),
+                    ));
+                    context.goNamed("LoginPage");
+                  },
+                  orElse: () => null);
             },
             child: const Text(
               "Swappes",
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.w100),
-            ),
+            ).animate().fadeIn().slideY(
+                begin: 1,
+                end: 0,
+                duration: const Duration(milliseconds: 500),
+                curve: const Cubic(0, 0.5, 0, 1)),
           ),
         ),
       ),

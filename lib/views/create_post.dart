@@ -34,10 +34,11 @@ class _CreatePostUIState extends State<CreatePostUI> {
 
   @override
   Widget build(BuildContext context) {
-    final createPostState = context.watch<PostBloc>().state;
+    final postState = context.watch<PostBloc>().state;
 
     return PopScope(
-      canPop: createPostState is! CreatingPost,
+      canPop:
+          postState.maybeWhen(creatingPost: () => true, orElse: () => false),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -54,12 +55,7 @@ class _CreatePostUIState extends State<CreatePostUI> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
                         vertical: 7, horizontal: 15)),
-                onPressed: createPostState is CreatingPost
-                    ? null
-                    : () {
-                        context.read<PostBloc>().add(CreatePost(
-                            description: description.text, images: _images));
-                      },
+                onPressed: postState.maybeWhen(creatingPost: () => null, orElse: () => () => context.read<PostBloc>().add(PostEvent.createPost(description: description.text, images: _images))),
                 child: const Text(
                   "Posting",
                   style: TextStyle(
@@ -79,18 +75,22 @@ class _CreatePostUIState extends State<CreatePostUI> {
               children: [
                 BlocListener<PostBloc, PostState>(
                   listener: (context, state) {
-                    if (state is PostCreated) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(
-                          "Post Created",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        showCloseIcon: true,
-                        backgroundColor: Color(0xFF18191A),
-                      ));
-                      context.goNamed("MainPage");
-                    }
+                    state.maybeWhen(
+                      postCreated: () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            "Post Created",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          showCloseIcon: true,
+                          backgroundColor: Color(0xFF18191A),
+                        ));
+                        context.goNamed("MainPage");
+                      },
+                      orElse: () {},
+                    );
                   },
                   child: Container(),
                 ),

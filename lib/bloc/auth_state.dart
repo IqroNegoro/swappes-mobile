@@ -1,20 +1,9 @@
 part of 'auth_bloc.dart';
 
-@immutable
-sealed class AuthState {}
-
-final class AuthInitial extends AuthState {}
-
-final class AuthPending extends AuthState {}
-
-final class AuthError extends AuthState {
-  final dynamic error;
-
-  AuthError(this.error);
-}
-
-final class Authenticated extends AuthState {
-  final dynamic user;
-
-  Authenticated({this.user});
+@freezed
+class AuthState with _$AuthState {
+  const factory AuthState.initial() = _Initial;
+  const factory AuthState.pending() = _Pending;
+  const factory AuthState.error(final dynamic error) = _Error;
+  const factory AuthState.authenticated({final dynamic user}) = _Authenticated;
 }

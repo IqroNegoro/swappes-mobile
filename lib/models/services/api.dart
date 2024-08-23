@@ -4,8 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/storage/storage.dart';
 
-// final Dio dio = Dio(BaseOptions(baseUrl: "http://localhost:3001/"));
-
 class Api {
   Api._internal();
 

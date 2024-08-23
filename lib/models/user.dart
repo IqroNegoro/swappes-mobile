@@ -1,30 +1,22 @@
-final class User {
-  final String id;
-  final String name;
-  final Avatar avatar;
-  final String? banner;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:swappes/models/avatar.dart';
 
-  const User({
-    required this.id,
-    required this.name,
-    required this.avatar,
-    this.banner,
-  });
+part "user.freezed.dart";
+part "user.g.dart";
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['_id'],
-        avatar: Avatar.fromJson(json['avatar']),
-        name: json['name'],
-        banner: json['banner'],
-      );
-}
+@freezed
+final class User with _$User {
+  // final String id;
+  // final String name;
+  // final Avatar avatar;
+  // final String? banner;
 
-class Avatar {
-  final String? url;
-  final String? discordId;
+  factory User({
+    @JsonKey(name: "_id") required final String id,
+    required final String name,
+    required final Avatar avatar,
+    final String? banner,
+  }) = _User;
 
-  const Avatar({this.url, this.discordId});
-
-  factory Avatar.fromJson(Map<String, dynamic> json) =>
-      Avatar(discordId: json['discordId'], url: json['url']);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

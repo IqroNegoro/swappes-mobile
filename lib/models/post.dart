@@ -1,4 +1,8 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:swappes/models/user.dart';
+
+part "post.freezed.dart";
+part "post.g.dart";
 
 // final class ImageData {
 //   final int discordId;
@@ -7,40 +11,31 @@ import 'package:swappes/models/user.dart';
 //   const ImageData({required this.discordId, required this.images});
 // }
 
-final class PostModel {
-  final String id;
-  final String? description;
-  final List<dynamic> images;
-  final User user;
-  List<dynamic> likes;
-  final int comments;
-  final bool isShare;
-  final PostModel? share;
-  final String createdAt;
-  final String updatedAt;
 
-  PostModel(
-      {required this.id,
-      this.description = "",
-      required this.images,
-      required this.user,
-      this.likes = const [],
-      this.comments = 0,
-      this.isShare = false,
-      required this.share,
-      required this.createdAt,
-      required this.updatedAt});
+@freezed
+final class PostModel with _$PostModel {
+  // final String id;
+  // final String? description;
+  // final List<dynamic> images;
+  // final User user;
+  // List<dynamic> likes;
+  // final int comments;
+  // final bool isShare;
+  // final PostModel? share;
+  // final String createdAt;
+  // final String updatedAt;
 
-  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
-        id: json['_id'],
-        description: json['description'] ?? "",
-        images: json['images'],
-        user: User.fromJson(json['user']),
-        likes: json['likes'] ?? [],
-        comments: json['comments'],
-        isShare: json['isShare'],
-        share: json['share'] != null ? PostModel.fromJson(json['share']) : null,
-        createdAt: json['createdAt'],
-        updatedAt: json['updatedAt'],
-      );
+  factory PostModel(
+      {@JsonKey(name: "_id") required final String id,
+      final String? description,
+      required List<dynamic> images,
+      required User user,
+      @Default([]) List<dynamic> likes,
+      @Default(0) int comments,
+      @Default(false) final bool isShare,
+      required final PostModel? share,
+      required final String createdAt,
+      required final String updatedAt}) = _PostModel;
+
+  factory PostModel.fromJson(Map<String, dynamic> json) => _$PostModelFromJson(json);
 }

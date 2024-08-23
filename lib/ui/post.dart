@@ -120,7 +120,7 @@ class Post extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                context.read<PostBloc>().add(LikePost(post.id));
+                context.read<PostBloc>().add(PostEvent.likePost(post.id));
               },
               label: const Text(
                 "Like",
@@ -128,17 +128,21 @@ class Post extends StatelessWidget {
               ),
               icon: BlocBuilder<PostBloc, PostState>(
                 builder: (context, state) {
-                  if (state is LikingPost && state.id == post.id) {
-                    return const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                            color: Colors.black,
-                            strokeAlign: BorderSide.strokeAlignCenter,
-                            strokeWidth: 1));
-                  } else {
-                    return const Icon(Icons.thumb_up);
-                  }
+                  return state.maybeWhen(
+                    postLiking: (id) {
+                      if (id == post.id) {
+                        return const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                                color: Colors.black,
+                                strokeAlign: BorderSide.strokeAlignCenter,
+                                strokeWidth: 1));
+                      }
+                      return const Icon(Icons.thumb_up);
+                    },
+                    orElse: () => const Icon(Icons.thumb_up),
+                  );
                 },
               ),
             ),

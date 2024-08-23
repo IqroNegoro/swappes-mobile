@@ -68,19 +68,16 @@ class LoginPage extends StatelessWidget {
               ),
               BlocListener<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state is Authenticated) {
-                    context.goNamed("MainPage");
-                  }
+                  state.maybeWhen(authenticated: (user) => context.goNamed("MainPage") ,orElse: () => null);
                 },
                 child: TextButton(
                   style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(50)),
-                  onPressed: authState is AuthPending
-                      ? null
-                      : () async {
-                          context.read<AuthBloc>().add(SignIn(
-                              emailController.text, passwordController.text));
-                        },
+                  onPressed: authState.maybeWhen(
+                      pending: () => null,
+                      orElse: () => () => context.read<AuthBloc>().add(
+                          AuthEvent.signIn(
+                              emailController.text, passwordController.text))),
                   child: const Text(
                     "Masuk",
                     style: TextStyle(

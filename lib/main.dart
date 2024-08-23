@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:swappes/bloc/auth_bloc.dart';
 import 'package:swappes/bloc/post_bloc.dart';
-import 'package:swappes/models/services/api.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/splash_screen.dart';
 import 'package:swappes/views/create_post.dart';
@@ -21,7 +17,7 @@ final GoRouter _router =
   GoRoute(
     path: "/loading",
     name: "SplashPage",
-    builder: (context, state) => SplashScreenUI(),
+    builder: (context, state) => const SplashScreenUI(),
   ),
   GoRoute(
       path: "/login",
@@ -30,7 +26,7 @@ final GoRouter _router =
   GoRoute(
     path: "/",
     name: "MainPage",
-    builder: (context, state) => const MainPage(),
+    builder: (context, state) => MainPage(),
   ),
   GoRoute(
     path: "/create",

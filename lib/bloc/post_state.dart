@@ -1,51 +1,14 @@
 part of 'post_bloc.dart';
 
-@immutable
-sealed class PostState {}
-
-final class PostInitial extends PostState {}
-
-final class PostLoading extends PostState {}
-
-final class PostLoaded extends PostState {
-  final List<PostModel> posts;
-
-  PostLoaded(this.posts);
+@freezed
+class PostState with _$PostState {
+  const factory PostState.initial() = _Initial;
+  const factory PostState.postLoading() = _PostLoading;
+  const factory PostState.postLoaded(final List<PostModel> posts) = _PostLoaded;
+  const factory PostState.postError(final dynamic errors) = _PostError;
+  const factory PostState.postLiking(final String? id) = _PostLiking;
+  const factory PostState.postLiked() = _PostLiked;
+  const factory PostState.creatingPost() = _CreatingPost;
+  const factory PostState.postCreated() = _PostCreated;
+  const factory PostState.createPostError(final dynamic errors) = _CreatePostError;
 }
-
-final class PostError extends PostState {
-  final dynamic errors;
-
-  PostError(this.errors);
-}
-
-final class LikingPost extends PostState {
-  final String? id;
-
-  LikingPost(this.id);
-}
-
-final class PostLiked extends PostState {}
-
-final class CreatingPost extends PostState {}
-
-final class PostCreated extends PostState {}
-
-final class CreatePostError extends PostState {
-  final dynamic errors;
-
-  CreatePostError(this.errors);
-}
-// part of 'post_bloc.dart';
-
-// enum PostStates { initial, loading, error, loaded, likingPost }
-
-// class PostState {
-//   final List<PostModel> posts;
-//   final PostStates state;
-
-//   const PostState({this.posts = const [], this.state = PostStates.initial});
-
-//   PostState copyWith({List<PostModel>? posts, PostStates? state}) =>
-//       PostState(posts: posts ?? this.posts, state: state ?? this.state);
-// }
