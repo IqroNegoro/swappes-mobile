@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -141,13 +143,18 @@ class Post extends StatelessWidget {
                       }
                       return const Icon(Icons.thumb_up);
                     },
+                    postLiked: (id) {
+                      return const Icon(Icons.thumb_up);
+                    },
                     orElse: () => const Icon(Icons.thumb_up),
                   );
                 },
               ),
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                context.read<PostBloc>().add(PostEvent.showComments(post.id));
+              },
               label: const Text(
                 "Comment",
                 style: TextStyle(color: Colors.black),

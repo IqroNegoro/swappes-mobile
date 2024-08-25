@@ -7,7 +7,8 @@ class PostState with _$PostState {
   const factory PostState.postLoaded(final List<PostModel> posts) = _PostLoaded;
   const factory PostState.postError(final dynamic errors) = _PostError;
   const factory PostState.postLiking(final String? id) = _PostLiking;
-  const factory PostState.postLiked() = _PostLiked;
+  const factory PostState.postLiked(final String? id) = _PostLiked;
+  const factory PostState.postComments(final String id) = _PostComments;
   const factory PostState.creatingPost() = _CreatingPost;
   const factory PostState.postCreated() = _PostCreated;
   const factory PostState.createPostError(final dynamic errors) = _CreatePostError;

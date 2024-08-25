@@ -15,6 +15,7 @@ part 'post_bloc.freezed.dart';
 class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(const _Initial()) {
     on<_LoadPost>((event, emit) async {
+      log(state.toString());
       emit(const PostState.postLoading());
       try {
         List<PostModel> lists = [];
@@ -35,13 +36,14 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostState.postLiking(event.id));
       try {
         await Api.dio.post("posts/${event.id}/likes");
-        emit(PostState.postLiked());
+        emit(PostState.postLiked(event.id));
       } on DioException catch (e) {
         emit(PostState.postError(e.error));
       }
     }, transformer: droppable());
 
     on<_CreatePost>((event, emit) async {
+      log(state.toString());
       emit(const PostState.creatingPost());
       try {
         final List<MultipartFile>? images = event.images
@@ -55,6 +57,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       } on DioException catch (e) {
         emit(PostState.createPostError(e.error));
       }
+    });
+
+    on<_ShowComments>((event, emit) {
+      log(state.toString());
+      emit(PostState.postComments(event.id));
+      //   state.maybeWhen(
+      //       postComments: (_) => emit(const PostState.initial()),
+      //       initial: () => ),
+      //       orElse: () {});
     });
   }
 }

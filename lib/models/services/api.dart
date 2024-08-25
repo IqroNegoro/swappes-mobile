@@ -34,6 +34,7 @@ class Api {
       },
       onRequest: (options, handler) async {
         log("request");
+        log(options.path);
         final FutureOr<String> token = await Storage.get("accessToken") ?? "";
         options.headers['authorization'] = 'Bearer $token';
         return handler.next(options);
