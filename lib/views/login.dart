@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:swappes/bloc/auth_bloc.dart';
+import 'package:swappes/cubit/auth_cubit.dart';
+import 'package:swappes/providers/profile.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -13,7 +16,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.watch<AuthBloc>().state;
+    final authState = context.watch<AuthCubit>().state;
 
     return Scaffold(
         body: Padding(
@@ -66,18 +69,22 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              BlocListener<AuthBloc, AuthState>(
+              BlocListener<AuthCubit, AuthState>(
                 listener: (context, state) {
-                  state.maybeWhen(authenticated: (user) => context.goNamed("MainPage") ,orElse: () => null);
+                  state.maybeWhen(
+                      success: (user) {
+                        context.read<Profile>().saveUser(user);
+                        context.goNamed("MainPage");
+                      },
+                      orElse: () => null);
                 },
                 child: TextButton(
                   style: TextButton.styleFrom(
                       minimumSize: const Size.fromHeight(50)),
                   onPressed: authState.maybeWhen(
-                      pending: () => null,
-                      orElse: () => () => context.read<AuthBloc>().add(
-                          AuthEvent.signIn(
-                              emailController.text, passwordController.text))),
+                      loading: () => null,
+                      orElse: () => () => context.read<AuthCubit>().login(
+                          emailController.text, passwordController.text)),
                   child: const Text(
                     "Masuk",
                     style: TextStyle(

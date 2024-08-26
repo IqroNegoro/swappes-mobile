@@ -14,17 +14,6 @@ part "post.g.dart";
 
 @freezed
 final class PostModel with _$PostModel {
-  // final String id;
-  // final String? description;
-  // final List<dynamic> images;
-  // final User user;
-  // List<dynamic> likes;
-  // final int comments;
-  // final bool isShare;
-  // final PostModel? share;
-  // final String createdAt;
-  // final String updatedAt;
-
   factory PostModel(
       {@JsonKey(name: "_id") required final String id,
       final String? description,

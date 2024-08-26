@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:dio/dio.dart';
-import 'package:swappes/providers/profile.dart';
+import 'package:dio/dio.dart' as http;
 import 'package:swappes/storage/storage.dart';
 
 class Api {
@@ -11,26 +10,33 @@ class Api {
 
   factory Api() => _instance;
 
-  static final Dio _dio = Dio(BaseOptions(baseUrl: "http://localhost:3001/"))
-    ..interceptors.add(InterceptorsWrapper(
+  static final http.Dio _dio = http.Dio(
+      http.BaseOptions(baseUrl: "http://localhost:3001/"))
+    ..interceptors.add(http.InterceptorsWrapper(
       onError: (error, handler) async {
-        log("Error");
-        if (error.response!.statusCode == 401) {
-          final FutureOr<String> refresh =
-              await Storage.get("refreshToken") ?? "";
+        try {
+          log("Error");
+          if (error.response?.statusCode == 401) {
+            final FutureOr<String> refresh =
+                await Storage.get("refreshToken") ?? "";
+            final response = await http.Dio(
+                    http.BaseOptions(baseUrl: "http://localhost:3001/"))
+                .post("info", data: {"refreshToken": refresh});
+            // await dio.post("info", data: {"refreshToken": refresh});
 
-          final response =
-              await dio.post("info", data: {"refreshToken": refresh});
+            await Storage.save("accessToken", response.data['accessToken']);
+            await Storage.save("refreshToken", response.data['refreshToken']);
 
-          await Storage.save("accessToken", response.data['accessToken']);
-          await Storage.save("refreshToken", response.data['refreshToken']);
-
-          error.requestOptions.headers['Authorization'] =
-              response.data['accessToken'];
-
-          return handler.resolve(await dio.fetch(error.requestOptions));
+            error.requestOptions.headers['Authorization'] =
+                response.data['accessToken'];
+            return handler.resolve(await dio.fetch(error.requestOptions));
+          }
+          return handler.next(error);
+        } on http.DioException catch (error) {
+          if (error.response!.statusCode == 401) {
+            return handler.next(error);
+          }
         }
-        return handler.next(error);
       },
       onRequest: (options, handler) async {
         log("request");
@@ -45,5 +51,5 @@ class Api {
       },
     ));
 
-  static Dio get dio => _dio;
+  static http.Dio get dio => _dio;
 }

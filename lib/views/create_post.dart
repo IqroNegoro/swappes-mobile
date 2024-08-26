@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:swappes/bloc/post_bloc.dart';
+import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 
 class CreatePostUI extends StatefulWidget {
@@ -32,13 +33,14 @@ class _CreatePostUIState extends State<CreatePostUI> {
     }
   }
 
+  final PostCubit postCubit = PostCubit();
+
   @override
   Widget build(BuildContext context) {
-    final postState = context.watch<PostBloc>().state;
+    final postState = postCubit.state;
 
     return PopScope(
-      canPop:
-          postState.maybeWhen(creatingPost: () => true, orElse: () => false),
+      canPop: postState.status != PostStatus.creating,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -55,7 +57,10 @@ class _CreatePostUIState extends State<CreatePostUI> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
                         vertical: 7, horizontal: 15)),
-                onPressed: postState.maybeWhen(creatingPost: () => null, orElse: () => () => context.read<PostBloc>().add(PostEvent.createPost(description: description.text, images: _images))),
+                onPressed: postState.status == PostStatus.creating
+                    ? null
+                    : () => postCubit.createPost(
+                        description: description.text, images: _images),
                 child: const Text(
                   "Posting",
                   style: TextStyle(
@@ -73,26 +78,25 @@ class _CreatePostUIState extends State<CreatePostUI> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
-                BlocListener<PostBloc, PostState>(
+                BlocListener<PostCubit, PostState>(
+                  bloc: postCubit,
                   listener: (context, state) {
-                    state.maybeWhen(
-                      postCreated: () {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            "Post Created",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          showCloseIcon: true,
-                          backgroundColor: Color(0xFF18191A),
-                        ));
-                        context.goNamed("MainPage");
-                      },
-                      orElse: () {},
-                    );
+                    log("creating...");
+                    log(state.status.toString());
+                    if (state.status == PostStatus.loaded) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Post Created",
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        showCloseIcon: true,
+                        backgroundColor: Color(0xFF18191A),
+                      ));
+                      context.goNamed("MainPage");
+                    }
                   },
-                  child: Container(),
+                  child: const SizedBox(),
                 ),
                 Consumer<Profile>(
                   builder: (BuildContext context, Profile value, _) {

@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:swappes/bloc/auth_bloc.dart';
 import 'package:swappes/bloc/post_bloc.dart';
+import 'package:swappes/cubit/auth_cubit.dart';
+import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/splash_screen.dart';
 import 'package:swappes/views/create_post.dart';
@@ -43,12 +45,18 @@ void main() async {
                 create: (_) => PostBloc(),
               ),
               BlocProvider(
-                create: (_) => AuthBloc(),
-              )
+                create: (_) => PostCubit(),
+              ),
+              BlocProvider(
+                create: (_) => AuthCubit(),
+              ),
+              // BlocProvider(
+              //   create: (_) => AuthBloc(),
+              // )
             ],
             child: const MainApp(),
           ),
-      create: (context) => Profile()));
+      create: (_) => Profile()));
 }
 
 class MainApp extends StatelessWidget {

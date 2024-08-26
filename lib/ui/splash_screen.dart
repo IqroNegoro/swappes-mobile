@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import "package:flutter_animate/flutter_animate.dart";
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:swappes/bloc/auth_bloc.dart';
+import 'package:swappes/cubit/auth_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 
 class SplashScreenUI extends StatelessWidget {
@@ -15,11 +17,13 @@ class SplashScreenUI extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
         child: Center(
-          child: BlocListener<AuthBloc, AuthState>(
-            bloc: AuthBloc()..add(const AuthEvent.checkAuthenticated()),
+          child: BlocListener<AuthCubit, AuthState>(
+            bloc: AuthCubit()..checkAuthenticated(),
             listener: (context, state) {
+              log("checking...");
+              log(state.toString());
               state.maybeWhen(
-                  authenticated: (user) {
+                  success: (user) {
                     context.read<Profile>().saveUser(user);
                     context.goNamed("MainPage");
                   },

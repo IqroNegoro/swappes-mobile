@@ -53,6 +53,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         var post = await Api.dio.post("posts",
             data: FormData.fromMap(
                 {'images': images, 'description': event.description}));
+
         emit(const PostState.postCreated());
       } on DioException catch (e) {
         emit(PostState.createPostError(e.error));

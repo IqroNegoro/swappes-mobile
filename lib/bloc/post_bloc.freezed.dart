@@ -670,7 +670,6 @@ mixin _$PostState {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -685,7 +684,6 @@ mixin _$PostState {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -700,7 +698,6 @@ mixin _$PostState {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -716,7 +713,6 @@ mixin _$PostState {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -731,7 +727,6 @@ mixin _$PostState {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -746,7 +741,6 @@ mixin _$PostState {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -817,7 +811,6 @@ class _$InitialImpl implements _Initial {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -835,7 +828,6 @@ class _$InitialImpl implements _Initial {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -853,7 +845,6 @@ class _$InitialImpl implements _Initial {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -875,7 +866,6 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -893,7 +883,6 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -911,7 +900,6 @@ class _$InitialImpl implements _Initial {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -973,7 +961,6 @@ class _$PostLoadingImpl implements _PostLoading {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -991,7 +978,6 @@ class _$PostLoadingImpl implements _PostLoading {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1009,7 +995,6 @@ class _$PostLoadingImpl implements _PostLoading {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1031,7 +1016,6 @@ class _$PostLoadingImpl implements _PostLoading {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1049,7 +1033,6 @@ class _$PostLoadingImpl implements _PostLoading {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -1067,7 +1050,6 @@ class _$PostLoadingImpl implements _PostLoading {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -1161,7 +1143,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -1179,7 +1160,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1197,7 +1177,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1219,7 +1198,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1237,7 +1215,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -1255,7 +1232,6 @@ class _$PostLoadedImpl implements _PostLoaded {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -1349,7 +1325,6 @@ class _$PostErrorImpl implements _PostError {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -1367,7 +1342,6 @@ class _$PostErrorImpl implements _PostError {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1385,7 +1359,6 @@ class _$PostErrorImpl implements _PostError {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1407,7 +1380,6 @@ class _$PostErrorImpl implements _PostError {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1425,7 +1397,6 @@ class _$PostErrorImpl implements _PostError {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -1443,7 +1414,6 @@ class _$PostErrorImpl implements _PostError {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -1536,7 +1506,6 @@ class _$PostLikingImpl implements _PostLiking {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -1554,7 +1523,6 @@ class _$PostLikingImpl implements _PostLiking {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1572,7 +1540,6 @@ class _$PostLikingImpl implements _PostLiking {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1594,7 +1561,6 @@ class _$PostLikingImpl implements _PostLiking {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1612,7 +1578,6 @@ class _$PostLikingImpl implements _PostLiking {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -1630,7 +1595,6 @@ class _$PostLikingImpl implements _PostLiking {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -1723,7 +1687,6 @@ class _$PostLikedImpl implements _PostLiked {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -1741,7 +1704,6 @@ class _$PostLikedImpl implements _PostLiked {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1759,7 +1721,6 @@ class _$PostLikedImpl implements _PostLiked {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1781,7 +1742,6 @@ class _$PostLikedImpl implements _PostLiked {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1799,7 +1759,6 @@ class _$PostLikedImpl implements _PostLiked {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -1817,7 +1776,6 @@ class _$PostLikedImpl implements _PostLiked {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -1910,7 +1868,6 @@ class _$PostCommentsImpl implements _PostComments {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -1928,7 +1885,6 @@ class _$PostCommentsImpl implements _PostComments {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -1946,7 +1902,6 @@ class _$PostCommentsImpl implements _PostComments {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -1968,7 +1923,6 @@ class _$PostCommentsImpl implements _PostComments {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -1986,7 +1940,6 @@ class _$PostCommentsImpl implements _PostComments {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -2004,7 +1957,6 @@ class _$PostCommentsImpl implements _PostComments {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -2024,162 +1976,6 @@ abstract class _PostComments implements PostState {
   @JsonKey(ignore: true)
   _$$PostCommentsImplCopyWith<_$PostCommentsImpl> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DismissCommentsImplCopyWith<$Res> {
-  factory _$$DismissCommentsImplCopyWith(_$DismissCommentsImpl value,
-          $Res Function(_$DismissCommentsImpl) then) =
-      __$$DismissCommentsImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$DismissCommentsImplCopyWithImpl<$Res>
-    extends _$PostStateCopyWithImpl<$Res, _$DismissCommentsImpl>
-    implements _$$DismissCommentsImplCopyWith<$Res> {
-  __$$DismissCommentsImplCopyWithImpl(
-      _$DismissCommentsImpl _value, $Res Function(_$DismissCommentsImpl) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$DismissCommentsImpl implements _DismissComments {
-  const _$DismissCommentsImpl();
-
-  @override
-  String toString() {
-    return 'PostState.dismissComments()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$DismissCommentsImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() postLoading,
-    required TResult Function(List<PostModel> posts) postLoaded,
-    required TResult Function(dynamic errors) postError,
-    required TResult Function(String? id) postLiking,
-    required TResult Function(String? id) postLiked,
-    required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
-    required TResult Function() creatingPost,
-    required TResult Function() postCreated,
-    required TResult Function(dynamic errors) createPostError,
-  }) {
-    return dismissComments();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? postLoading,
-    TResult? Function(List<PostModel> posts)? postLoaded,
-    TResult? Function(dynamic errors)? postError,
-    TResult? Function(String? id)? postLiking,
-    TResult? Function(String? id)? postLiked,
-    TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
-    TResult? Function()? creatingPost,
-    TResult? Function()? postCreated,
-    TResult? Function(dynamic errors)? createPostError,
-  }) {
-    return dismissComments?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? postLoading,
-    TResult Function(List<PostModel> posts)? postLoaded,
-    TResult Function(dynamic errors)? postError,
-    TResult Function(String? id)? postLiking,
-    TResult Function(String? id)? postLiked,
-    TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
-    TResult Function()? creatingPost,
-    TResult Function()? postCreated,
-    TResult Function(dynamic errors)? createPostError,
-    required TResult orElse(),
-  }) {
-    if (dismissComments != null) {
-      return dismissComments();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_PostLoading value) postLoading,
-    required TResult Function(_PostLoaded value) postLoaded,
-    required TResult Function(_PostError value) postError,
-    required TResult Function(_PostLiking value) postLiking,
-    required TResult Function(_PostLiked value) postLiked,
-    required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
-    required TResult Function(_CreatingPost value) creatingPost,
-    required TResult Function(_PostCreated value) postCreated,
-    required TResult Function(_CreatePostError value) createPostError,
-  }) {
-    return dismissComments(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_PostLoading value)? postLoading,
-    TResult? Function(_PostLoaded value)? postLoaded,
-    TResult? Function(_PostError value)? postError,
-    TResult? Function(_PostLiking value)? postLiking,
-    TResult? Function(_PostLiked value)? postLiked,
-    TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
-    TResult? Function(_CreatingPost value)? creatingPost,
-    TResult? Function(_PostCreated value)? postCreated,
-    TResult? Function(_CreatePostError value)? createPostError,
-  }) {
-    return dismissComments?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_PostLoading value)? postLoading,
-    TResult Function(_PostLoaded value)? postLoaded,
-    TResult Function(_PostError value)? postError,
-    TResult Function(_PostLiking value)? postLiking,
-    TResult Function(_PostLiked value)? postLiked,
-    TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
-    TResult Function(_CreatingPost value)? creatingPost,
-    TResult Function(_PostCreated value)? postCreated,
-    TResult Function(_CreatePostError value)? createPostError,
-    required TResult orElse(),
-  }) {
-    if (dismissComments != null) {
-      return dismissComments(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _DismissComments implements PostState {
-  const factory _DismissComments() = _$DismissCommentsImpl;
 }
 
 /// @nodoc
@@ -2227,7 +2023,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -2245,7 +2040,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -2263,7 +2057,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -2285,7 +2078,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -2303,7 +2095,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -2321,7 +2112,6 @@ class _$CreatingPostImpl implements _CreatingPost {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -2383,7 +2173,6 @@ class _$PostCreatedImpl implements _PostCreated {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -2401,7 +2190,6 @@ class _$PostCreatedImpl implements _PostCreated {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -2419,7 +2207,6 @@ class _$PostCreatedImpl implements _PostCreated {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -2441,7 +2228,6 @@ class _$PostCreatedImpl implements _PostCreated {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -2459,7 +2245,6 @@ class _$PostCreatedImpl implements _PostCreated {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -2477,7 +2262,6 @@ class _$PostCreatedImpl implements _PostCreated {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
@@ -2567,7 +2351,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     required TResult Function(String? id) postLiking,
     required TResult Function(String? id) postLiked,
     required TResult Function(String id) postComments,
-    required TResult Function() dismissComments,
     required TResult Function() creatingPost,
     required TResult Function() postCreated,
     required TResult Function(dynamic errors) createPostError,
@@ -2585,7 +2368,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     TResult? Function(String? id)? postLiking,
     TResult? Function(String? id)? postLiked,
     TResult? Function(String id)? postComments,
-    TResult? Function()? dismissComments,
     TResult? Function()? creatingPost,
     TResult? Function()? postCreated,
     TResult? Function(dynamic errors)? createPostError,
@@ -2603,7 +2385,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     TResult Function(String? id)? postLiking,
     TResult Function(String? id)? postLiked,
     TResult Function(String id)? postComments,
-    TResult Function()? dismissComments,
     TResult Function()? creatingPost,
     TResult Function()? postCreated,
     TResult Function(dynamic errors)? createPostError,
@@ -2625,7 +2406,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     required TResult Function(_PostLiking value) postLiking,
     required TResult Function(_PostLiked value) postLiked,
     required TResult Function(_PostComments value) postComments,
-    required TResult Function(_DismissComments value) dismissComments,
     required TResult Function(_CreatingPost value) creatingPost,
     required TResult Function(_PostCreated value) postCreated,
     required TResult Function(_CreatePostError value) createPostError,
@@ -2643,7 +2423,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     TResult? Function(_PostLiking value)? postLiking,
     TResult? Function(_PostLiked value)? postLiked,
     TResult? Function(_PostComments value)? postComments,
-    TResult? Function(_DismissComments value)? dismissComments,
     TResult? Function(_CreatingPost value)? creatingPost,
     TResult? Function(_PostCreated value)? postCreated,
     TResult? Function(_CreatePostError value)? createPostError,
@@ -2661,7 +2440,6 @@ class _$CreatePostErrorImpl implements _CreatePostError {
     TResult Function(_PostLiking value)? postLiking,
     TResult Function(_PostLiked value)? postLiked,
     TResult Function(_PostComments value)? postComments,
-    TResult Function(_DismissComments value)? dismissComments,
     TResult Function(_CreatingPost value)? creatingPost,
     TResult Function(_PostCreated value)? postCreated,
     TResult Function(_CreatePostError value)? createPostError,
