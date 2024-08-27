@@ -38,193 +38,193 @@ class _CreatePostUIState extends State<CreatePostUI> {
   Widget build(BuildContext context) {
     // final postCubit = context.watch<PostCubit>();
     return const Scaffold();
-    final postBloc = context.watch<PostBloc>();
+    // final postBloc = context.watch<PostBloc>();
 
-    return PopScope(
-      canPop: postBloc.state
-          .maybeWhen(creatingPost: () => false, orElse: () => true),
-      // canPop: postCubit.state.status != PostStatus.creating,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Create Post"),
-          backgroundColor: const Color.fromARGB(255, 241, 241, 241),
-          surfaceTintColor: Colors.transparent,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                    disabledBackgroundColor: Colors.black54,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 7, horizontal: 15)),
-                // onPressed: postCubit.state.status == PostStatus.creating
-                //     ? null
-                //     : () => postCubit.createPost(
-                //         description: description.text, images: _images),
-                onPressed: postBloc.state.maybeWhen(
-                    orElse: () => () => postBloc.add(PostEvent.createPost(
-                        description: description.text, images: _images)),
-                    creatingPost: () => null),
-                child: const Text(
-                  "Posting",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                BlocListener<PostBloc, PostState>(
-                  // bloc: postCubit,
-                  listener: (context, state) {
-                    log("creating...");
-                    // log(state.status.toString());
-                    // if (postCubit.state.status == PostStatus.loaded) {
-                    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    //     behavior: SnackBarBehavior.floating,
-                    //     content: Text(
-                    //       "Post Created",
-                    //       style: TextStyle(fontWeight: FontWeight.w600),
-                    //     ),
-                    //     showCloseIcon: true,
-                    //     backgroundColor: Color(0xFF18191A),
-                    //   ));
-                    //   // context.goNamed("MainPage");
-                    //   context.pop();
-                    // }
-                    state.maybeWhen(
-                      postCreated: () {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            "Post Created",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          showCloseIcon: true,
-                          backgroundColor: Color(0xFF18191A),
-                        ));
-                        context.goNamed("MainPage");
-                      },
-                      orElse: () {},
-                    );
-                  },
-                  child: const SizedBox(),
-                ),
-                Consumer<Profile>(
-                  builder: (BuildContext context, Profile value, _) {
-                    return Row(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: value.avatar!.url ?? "",
-                          imageBuilder: (context, imageProvider) =>
-                              CircleAvatar(
-                            backgroundImage: imageProvider,
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const CircleAvatar(
-                                  backgroundColor: Colors.black12),
-                          placeholder: (context, url) => const Skeletonizer(
-                            effect: PulseEffect(),
-                            child: Bone.circle(size: 2 * 20),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              value.name!,
-                              style: const TextStyle(
-                                  letterSpacing: 0.5,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                TextField(
-                  controller: description,
-                  cursorColor: Colors.black,
-                  maxLines: 15,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    hintText: "Write your thinking...",
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent)),
-                  ),
-                ),
-                ...List.generate(
-                  _images.length,
-                  (index) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _images.removeAt(index);
-                      });
-                    },
-                    child: Container(
-                        width: double.infinity,
-                        height: 200,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Image.file(
-                          _images[index],
-                          fit: BoxFit.cover,
-                        )),
-                  ),
-                ),
-                Visibility(
-                  visible: _images.length != 4,
-                  child: Container(
-                    width: double.infinity,
-                    height: 200,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () => getImageFromGallery(),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.image,
-                            color: Colors.white,
-                          ),
-                          Text("Add Image",
-                              style: TextStyle(color: Colors.white))
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+    // return PopScope(
+    //   canPop: postBloc.state
+    //       .maybeWhen(creatingPost: () => false, orElse: () => true),
+    //   // canPop: postCubit.state.status != PostStatus.creating,
+    //   child: Scaffold(
+    //     resizeToAvoidBottomInset: false,
+    //     appBar: AppBar(
+    //       centerTitle: true,
+    //       title: const Text("Create Post"),
+    //       backgroundColor: const Color.fromARGB(255, 241, 241, 241),
+    //       surfaceTintColor: Colors.transparent,
+    //       actions: [
+    //         Padding(
+    //           padding: const EdgeInsets.only(right: 10),
+    //           child: TextButton(
+    //             style: TextButton.styleFrom(
+    //                 disabledBackgroundColor: Colors.black54,
+    //                 alignment: Alignment.center,
+    //                 padding: const EdgeInsets.symmetric(
+    //                     vertical: 7, horizontal: 15)),
+    //             // onPressed: postCubit.state.status == PostStatus.creating
+    //             //     ? null
+    //             //     : () => postCubit.createPost(
+    //             //         description: description.text, images: _images),
+    //             onPressed: postBloc.state.maybeWhen(
+    //                 orElse: () => () => postBloc.add(PostEvent.createPost(
+    //                     description: description.text, images: _images)),
+    //                 creatingPost: () => null),
+    //             child: const Text(
+    //               "Posting",
+    //               style: TextStyle(
+    //                 color: Colors.white,
+    //                 fontWeight: FontWeight.w600,
+    //                 fontSize: 16,
+    //               ),
+    //             ),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //     body: SingleChildScrollView(
+    //       child: Padding(
+    //         padding: const EdgeInsets.all(15.0),
+    //         child: Column(
+    //           children: [
+    //             BlocListener<PostBloc, PostState>(
+    //               // bloc: postCubit,
+    //               listener: (context, state) {
+    //                 log("creating...");
+    //                 // log(state.status.toString());
+    //                 // if (postCubit.state.status == PostStatus.loaded) {
+    //                 //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //                 //     behavior: SnackBarBehavior.floating,
+    //                 //     content: Text(
+    //                 //       "Post Created",
+    //                 //       style: TextStyle(fontWeight: FontWeight.w600),
+    //                 //     ),
+    //                 //     showCloseIcon: true,
+    //                 //     backgroundColor: Color(0xFF18191A),
+    //                 //   ));
+    //                 //   // context.goNamed("MainPage");
+    //                 //   context.pop();
+    //                 // }
+    //                 state.maybeWhen(
+    //                   postCreated: () {
+    //                     ScaffoldMessenger.of(context)
+    //                         .showSnackBar(const SnackBar(
+    //                       behavior: SnackBarBehavior.floating,
+    //                       content: Text(
+    //                         "Post Created",
+    //                         style: TextStyle(fontWeight: FontWeight.w600),
+    //                       ),
+    //                       showCloseIcon: true,
+    //                       backgroundColor: Color(0xFF18191A),
+    //                     ));
+    //                     context.goNamed("MainPage");
+    //                   },
+    //                   orElse: () {},
+    //                 );
+    //               },
+    //               child: const SizedBox(),
+    //             ),
+    //             Consumer<Profile>(
+    //               builder: (BuildContext context, Profile value, _) {
+    //                 return Row(
+    //                   children: [
+    //                     CachedNetworkImage(
+    //                       imageUrl: value.avatar!.url ?? "",
+    //                       imageBuilder: (context, imageProvider) =>
+    //                           CircleAvatar(
+    //                         backgroundImage: imageProvider,
+    //                       ),
+    //                       errorWidget: (context, url, error) =>
+    //                           const CircleAvatar(
+    //                               backgroundColor: Colors.black12),
+    //                       placeholder: (context, url) => const Skeletonizer(
+    //                         effect: PulseEffect(),
+    //                         child: Bone.circle(size: 2 * 20),
+    //                       ),
+    //                     ),
+    //                     const SizedBox(width: 10),
+    //                     Column(
+    //                       crossAxisAlignment: CrossAxisAlignment.start,
+    //                       children: [
+    //                         Text(
+    //                           value.name!,
+    //                           style: const TextStyle(
+    //                               letterSpacing: 0.5,
+    //                               fontWeight: FontWeight.w600),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ],
+    //                 );
+    //               },
+    //             ),
+    //             const SizedBox(
+    //               height: 30,
+    //             ),
+    //             TextField(
+    //               controller: description,
+    //               cursorColor: Colors.black,
+    //               maxLines: 15,
+    //               autofocus: true,
+    //               decoration: const InputDecoration(
+    //                 hintText: "Write your thinking...",
+    //                 border: OutlineInputBorder(borderSide: BorderSide.none),
+    //                 focusedBorder: OutlineInputBorder(
+    //                     borderSide: BorderSide(color: Colors.transparent)),
+    //               ),
+    //             ),
+    //             ...List.generate(
+    //               _images.length,
+    //               (index) => GestureDetector(
+    //                 onTap: () {
+    //                   setState(() {
+    //                     _images.removeAt(index);
+    //                   });
+    //                 },
+    //                 child: Container(
+    //                     width: double.infinity,
+    //                     height: 200,
+    //                     margin: const EdgeInsets.symmetric(vertical: 8),
+    //                     decoration: BoxDecoration(
+    //                       color: Colors.grey,
+    //                       borderRadius: BorderRadius.circular(8),
+    //                     ),
+    //                     clipBehavior: Clip.hardEdge,
+    //                     child: Image.file(
+    //                       _images[index],
+    //                       fit: BoxFit.cover,
+    //                     )),
+    //               ),
+    //             ),
+    //             Visibility(
+    //               visible: _images.length != 4,
+    //               child: Container(
+    //                 width: double.infinity,
+    //                 height: 200,
+    //                 margin: const EdgeInsets.symmetric(vertical: 8),
+    //                 decoration: BoxDecoration(
+    //                   color: Colors.grey,
+    //                   borderRadius: BorderRadius.circular(8),
+    //                 ),
+    //                 child: ElevatedButton(
+    //                   onPressed: () => getImageFromGallery(),
+    //                   child: const Column(
+    //                     mainAxisAlignment: MainAxisAlignment.center,
+    //                     children: [
+    //                       Icon(
+    //                         Icons.image,
+    //                         color: Colors.white,
+    //                       ),
+    //                       Text("Add Image",
+    //                           style: TextStyle(color: Colors.white))
+    //                     ],
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

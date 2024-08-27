@@ -41,9 +41,9 @@ void main() async {
   runApp(ChangeNotifierProvider(
       builder: (context, _) => MultiBlocProvider(
             providers: [
-              BlocProvider(
-                create: (_) => PostBloc(),
-              ),
+              // BlocProvider(
+              //   create: (_) => PostBloc(),
+              // ),
               BlocProvider(
                 create: (_) => PostCubit(),
               ),

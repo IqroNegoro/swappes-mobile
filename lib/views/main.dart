@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:swappes/bloc/post_bloc.dart';
-// import 'package:swappes/cubit/post_cubit.dart';
+// import 'package:swappes/bloc/post_bloc.dart';
+import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
@@ -51,9 +51,9 @@ class MainPage extends StatelessWidget {
             color: Colors.white,
             backgroundColor: const Color(0xFF18191A),
             onRefresh: () async {
-              Future.sync(() {
-                PostBloc().add(const PostEvent.loadPost());
-              });
+              // Future.sync(() {
+              //   context.read<PostCubit>().getPost();
+              // });
             },
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (notification) {
@@ -122,11 +122,26 @@ class MainPage extends StatelessWidget {
                   //     return const PostSkeleton();
                   //   },
                   // ),
-                  BlocBuilder<PostBloc, PostState>(
-                    bloc: PostBloc()..add(const PostEvent.loadPost()),
+                  BlocBuilder<PostCubit, PostState>(
+                    bloc: PostCubit()..getPost(),
                     builder: (context, state) {
-                      return Container();
+                      // return Container();
                       // log(state.toString());
+                      if (state.status == PostStatus.loading) {
+                        return const PostSkeleton();
+                      } else if (state.status == PostStatus.error) {
+                        return const Center(
+                            child: Text("Post cannot be loaded"));
+                      } else if (state.status == PostStatus.loaded) {
+                        return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: state.posts.length,
+                            itemBuilder: (_, index) =>
+                                Post(post: state.posts[index]));
+                      }
+
+                      return const PostSkeleton();
                       // return state.maybeWhen(
                       //   postLoading: () => const PostSkeleton(),
                       //   postError: (errors) => const Center(
