@@ -11,5 +11,6 @@ class PostState with _$PostState {
   const factory PostState.postComments(final String id) = _PostComments;
   const factory PostState.creatingPost() = _CreatingPost;
   const factory PostState.postCreated() = _PostCreated;
-  const factory PostState.createPostError(final dynamic errors) = _CreatePostError;
+  const factory PostState.createPostError(final dynamic errors) =
+      _CreatePostError;
 }

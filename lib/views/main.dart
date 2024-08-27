@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:swappes/cubit/post_cubit.dart';
+import 'package:swappes/bloc/post_bloc.dart';
+// import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
@@ -17,6 +18,8 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final PostBloc postBloc = context.read<PostBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Swappes"),
@@ -49,7 +52,7 @@ class MainPage extends StatelessWidget {
             backgroundColor: const Color(0xFF18191A),
             onRefresh: () async {
               Future.sync(() {
-                context.read<PostCubit>().getPost();
+                PostBloc().add(const PostEvent.loadPost());
               });
             },
             child: NotificationListener<OverscrollIndicatorNotification>(
@@ -99,24 +102,31 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BlocBuilder<PostCubit, PostState>(
-                    bloc: context.read<PostCubit>()..getPost(),
-                    builder: (_, state) {
-                      if (state.status == PostStatus.loading) {
-                        return const PostSkeleton();
-                      } else if (state.status == PostStatus.error) {
-                        return const Center(
-                            child: Text("Post cannot be loaded"));
-                      } else if (state.status == PostStatus.loaded) {
-                        return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: state.posts.length,
-                            itemBuilder: (_, index) =>
-                                Post(post: state.posts[index]));
-                      }
+                  // BlocBuilder<PostCubit, PostState>(
+                  //   bloc: PostCubit()..getPost(),
+                  //   builder: (_, state) {
+                  //     if (state.status == PostStatus.loading) {
+                  //       return const PostSkeleton();
+                  //     } else if (state.status == PostStatus.error) {
+                  //       return const Center(
+                  //           child: Text("Post cannot be loaded"));
+                  //     } else if (state.status == PostStatus.loaded) {
+                  //       return ListView.builder(
+                  //           physics: const NeverScrollableScrollPhysics(),
+                  //           shrinkWrap: true,
+                  //           itemCount: state.posts.length,
+                  //           itemBuilder: (_, index) =>
+                  //               Post(post: state.posts[index]));
+                  //     }
 
-                      return const PostSkeleton();
+                  //     return const PostSkeleton();
+                  //   },
+                  // ),
+                  BlocBuilder<PostBloc, PostState>(
+                    bloc: PostBloc()..add(const PostEvent.loadPost()),
+                    builder: (context, state) {
+                      return Container();
+                      // log(state.toString());
                       // return state.maybeWhen(
                       //   postLoading: () => const PostSkeleton(),
                       //   postError: (errors) => const Center(
