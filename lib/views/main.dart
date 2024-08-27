@@ -17,7 +17,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PostState postState = context.watch<PostBloc>().state;
+    // final PostState postState = context.watch<PostBloc>().state;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Swappes"),
@@ -102,9 +102,8 @@ class MainPage extends StatelessWidget {
                   ),
                   BlocBuilder<PostBloc, PostState>(
                     bloc: PostBloc()..add(const PostEvent.loadPost()),
-                      // heran error mulu cape ah guwe
+                    // heran error mulu cape ah guwe
                     builder: (context, state) {
-                      log("state berubah");
                       log(state.toString());
                       return state.maybeWhen(
                         postLoading: () => const PostSkeleton(),
@@ -125,11 +124,11 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-          postState.maybeWhen(postComments: (id) {
-            return PostCommentsUI(id);
-          }, orElse: () {
-            return Container();
-          })
+          // postState.maybeWhen(postComments: (id) {
+          //   return PostCommentsUI(id);
+          // }, orElse: () {
+          //   return Container();
+          // })
           // BlocListener<PostBloc, PostState>(
           //   listener: (context, state) {
           //     state.maybeWhen(

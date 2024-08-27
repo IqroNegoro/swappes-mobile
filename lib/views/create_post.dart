@@ -38,7 +38,7 @@ class _CreatePostUIState extends State<CreatePostUI> {
 
     return PopScope(
       canPop:
-          postState.maybeWhen(creatingPost: () => true, orElse: () => false),
+          postState.maybeWhen(creatingPost: () => false, orElse: () => true),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -55,7 +55,11 @@ class _CreatePostUIState extends State<CreatePostUI> {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
                         vertical: 7, horizontal: 15)),
-                onPressed: postState.maybeWhen(creatingPost: () => null, orElse: () => () => context.read<PostBloc>().add(PostEvent.createPost(description: description.text, images: _images))),
+                onPressed: postState.maybeWhen(
+                    creatingPost: () => null,
+                    orElse: () => () => context.read<PostBloc>().add(
+                        PostEvent.createPost(
+                            description: description.text, images: _images))),
                 child: const Text(
                   "Posting",
                   style: TextStyle(

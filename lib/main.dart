@@ -26,7 +26,7 @@ final GoRouter _router =
   GoRoute(
     path: "/",
     name: "MainPage",
-    builder: (context, state) => MainPage(),
+    builder: (context, state) => const MainPage(),
   ),
   GoRoute(
     path: "/create",
