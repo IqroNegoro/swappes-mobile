@@ -6,13 +6,15 @@ enum PostStatus {
   loaded,
   error,
   creating,
+  liking,
+  showComment,
 }
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 class PostState with _$PostState {
   factory PostState(
       {@Default([]) final List<PostModel> posts,
+      @Default([]) final List<CommentModel> comments,
       @Default(PostStatus.initial) final PostStatus status,
       final String? postId, final dynamic error}) = _PostState;
-  // const factory PostState.initial() = _Initial;
 }

@@ -4,14 +4,6 @@ import 'package:swappes/models/user.dart';
 part "post.freezed.dart";
 part "post.g.dart";
 
-// final class ImageData {
-//   final int discordId;
-//   final String images;
-
-//   const ImageData({required this.discordId, required this.images});
-// }
-
-
 @freezed
 final class PostModel with _$PostModel {
   factory PostModel(

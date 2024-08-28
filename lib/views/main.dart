@@ -1,16 +1,15 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-// import 'package:swappes/bloc/post_bloc.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/post.dart';
+import 'package:swappes/ui/post_comments.dart';
 import 'package:swappes/ui/post_skeleton.dart';
 
 class MainPage extends StatelessWidget {
@@ -18,8 +17,6 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final PostBloc postBloc = context.read<PostBloc>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Swappes"),
@@ -51,9 +48,9 @@ class MainPage extends StatelessWidget {
             color: Colors.white,
             backgroundColor: const Color(0xFF18191A),
             onRefresh: () async {
-              // Future.sync(() {
-              //   context.read<PostCubit>().getPost();
-              // });
+              Future.sync(() {
+                context.read<PostCubit>().getPost();
+              });
             },
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (notification) {
@@ -102,31 +99,12 @@ class MainPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // BlocBuilder<PostCubit, PostState>(
-                  //   bloc: PostCubit()..getPost(),
-                  //   builder: (_, state) {
-                  //     if (state.status == PostStatus.loading) {
-                  //       return const PostSkeleton();
-                  //     } else if (state.status == PostStatus.error) {
-                  //       return const Center(
-                  //           child: Text("Post cannot be loaded"));
-                  //     } else if (state.status == PostStatus.loaded) {
-                  //       return ListView.builder(
-                  //           physics: const NeverScrollableScrollPhysics(),
-                  //           shrinkWrap: true,
-                  //           itemCount: state.posts.length,
-                  //           itemBuilder: (_, index) =>
-                  //               Post(post: state.posts[index]));
-                  //     }
-
-                  //     return const PostSkeleton();
-                  //   },
-                  // ),
                   BlocBuilder<PostCubit, PostState>(
-                    bloc: PostCubit()..getPost(),
+                    buildWhen: (previous, current) =>
+                        current.status != PostStatus.creating &&
+                        current.status != PostStatus.liking &&
+                        current.status != PostStatus.showComment,
                     builder: (context, state) {
-                      // return Container();
-                      // log(state.toString());
                       if (state.status == PostStatus.loading) {
                         return const PostSkeleton();
                       } else if (state.status == PostStatus.error) {
@@ -140,27 +118,26 @@ class MainPage extends StatelessWidget {
                             itemBuilder: (_, index) =>
                                 Post(post: state.posts[index]));
                       }
-
                       return const PostSkeleton();
-                      // return state.maybeWhen(
-                      //   postLoading: () => const PostSkeleton(),
-                      //   postError: (errors) => const Center(
-                      //     child: Text("Post cannot be loaded"),
-                      //   ),
-                      //   postLoaded: (posts) => ListView.builder(
-                      //       physics: const NeverScrollableScrollPhysics(),
-                      //       shrinkWrap: true,
-                      //       itemCount: posts.length,
-                      //       itemBuilder: (context, index) =>
-                      //           Post(post: posts[index])),
-                      //   orElse: () => const PostSkeleton(),
-                      // );
                     },
                   ),
                 ],
               ),
             ),
           ),
+          // BlocBuilder<PostCubit, PostState>(
+          //   buildWhen: (previous, current) =>
+          //       current.status == PostStatus.showComment &&
+          //       current.postId != null,
+          //   builder: (context, state) {
+          //     if (state.postId != null) {
+          //       return PostCommentsUI(state.postId!);
+          //     } else {
+          //       return const SizedBox();
+          //     }
+          //   },
+          // )
+          // PostCommentsUI(id)
         ],
       ),
     );

@@ -2,9 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:swappes/bloc/post_bloc.dart';
-import 'package:swappes/models/post.dart';
+import 'package:swappes/cubit/post_cubit.dart';
+import 'package:swappes/ui/comment.dart';
 
 class PostCommentsUI extends StatelessWidget {
   final String id;
@@ -12,25 +11,60 @@ class PostCommentsUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(id),
-      direction: DismissDirection.down,
-      onDismissed: (_) {
-        context.read<PostBloc>().add(PostEvent.showComments(id));
-      },
-      child: const Scaffold(
-        backgroundColor: Color.fromARGB(255, 241, 241, 241),
-        body: Padding(
-          padding: EdgeInsets.all(15.0),
+    return DraggableScrollableSheet(
+      initialChildSize: 1,
+      minChildSize: 0.5,
+      maxChildSize: 1,
+      snap: true,
+      shouldCloseOnMinExtent: true,
+      builder: (_, scrollController) => Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Comments",
                 style: TextStyle(fontSize: 24),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
-              )
+              ),
+              Expanded(
+                  child: NotificationListener<OverscrollIndicatorNotification>(
+                onNotification: (notification) {
+                  notification.disallowIndicator();
+
+                  return true;
+                },
+                child: BlocBuilder<PostCubit, PostState>(
+                  bloc: PostCubit()..showComments(id),
+                  builder: (context, state) {
+                    return ListView(
+                      controller: scrollController,
+                      children: const [
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                        CommentUI(),
+                      ],
+                    );
+                  },
+                ),
+              ))
             ],
           ),
         ),

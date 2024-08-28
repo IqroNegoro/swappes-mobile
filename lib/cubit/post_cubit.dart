@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:swappes/models/comment.dart';
 import 'package:swappes/models/post.dart';
 import 'package:swappes/models/services/api.dart';
 
@@ -14,6 +15,7 @@ class PostCubit extends Cubit<PostState> {
   PostCubit() : super(PostState(status: PostStatus.initial));
 
   Future<void> getPost() async {
+    if (state.status == PostStatus.creating) return;
     emit(state.copyWith(status: PostStatus.loading));
     try {
       List<PostModel> lists = [];
@@ -30,41 +32,33 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  // on<_LoadPost>((event, emit) async {
-  //     log(state.toString());
-  //     emit(const PostState.postLoading());
-  //     try {
-  //       List<PostModel> lists = [];
-  //       var posts = await Api.dio.get("posts");
+  Future<void> likePost(String id) async {
+    emit(state.copyWith(status: PostStatus.liking, postId: id));
+    try {
+      final likes = await Api.dio.post("posts/$id/likes");
 
-  //       for (var x in posts.data['data']) {
-  //         lists.add(PostModel.fromJson(x));
-  //       }
+      final int index = state.posts.indexWhere((element) => element.id == id);
+      state.posts[index] =
+          state.posts[index].copyWith(likes: likes.data['data']['likes']);
 
-  //       emit(PostState.postLoaded(lists));
-  //     } on DioException catch (e) {
-  //       log(e.toString());
-  //       emit(PostState.postError(e.error));
-  //     }
-  //   });
+      emit(state.copyWith(status: PostStatus.loaded, posts: state.posts));
+    } on DioException catch (e) {
+      emit(state.copyWith(error: e.error, status: PostStatus.error));
+    }
+  }
 
-  // on<_LikePost>((event, emit) async {
-  //   emit(PostState.postLiking(event.id));
-  //   try {
-  //     await Api.dio.post("posts/${event.id}/likes");
-  //     emit(PostState.postLiked(event.id));
-  //   } on DioException catch (e) {
-  //     emit(PostState.postError(e.error));
-  //   }
-  // }, transformer: droppable());
-
-  Future<void> createPost({String? description, List<File>? images}) async {
+  Future<void> createPost(
+      {String? description = "", List<File>? images = const []}) async {
+    if (description!.isEmpty && images!.isEmpty) return;
     emit(state.copyWith(status: PostStatus.creating));
     try {
-      final List<MultipartFile>? postImages = images
-          ?.map((image) => MultipartFile.fromFileSync(image.path,
-              filename: image.path.split("/").last))
-          .toList();
+      List<MultipartFile>? postImages = [];
+      if (images!.isNotEmpty) {
+        postImages = images
+            .map((image) => MultipartFile.fromFileSync(image.path,
+                filename: image.path.split("/").last))
+            .toList();
+      }
       var post = await Api.dio.post("posts",
           data: FormData.fromMap(
               {'images': postImages, 'description': description}));
@@ -78,30 +72,22 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
-  // on<_CreatePost>((event, emit) async {
-  //   log(state.toString());
-  //   emit(const PostState.creatingPost());
-  //   try {
-  //     final List<MultipartFile>? images = event.images
-  //         ?.map((image) => MultipartFile.fromFileSync(image.path,
-  //             filename: image.path.split("/").last))
-  //         .toList();
-  //     var post = await Api.dio.post("posts",
-  //         data: FormData.fromMap(
-  //             {'images': images, 'description': event.description}));
+  Future<void> showComments(String id) async {
+    if (state.status == PostStatus.showComment && state.postId == id) {
+      emit(state.copyWith(status: PostStatus.loaded));
+      return;
+    }
+    emit(state.copyWith(status: PostStatus.showComment, postId: id));
+    try {
+      final List<CommentModel> comments = [];
+      final data = await Api.dio.get("posts/$id/comments");
+      for (var x in data.data['data']) {
+        comments.add(CommentModel.fromJson(x));
+      }
 
-  //     emit(const PostState.postCreated());
-  //   } on DioException catch (e) {
-  //     emit(PostState.createPostError(e.error));
-  //   }
-  // });
-
-  // on<_ShowComments>((event, emit) {
-  //   log(state.toString());
-  //   emit(PostState.postComments(event.id));
-  //   //   state.maybeWhen(
-  //   //       postComments: (_) => emit(const PostState.initial()),
-  //   //       initial: () => ),
-  //   //       orElse: () {});
-  // });
+      emit(state.copyWith(comments: comments));
+    } on DioException catch (e) {
+      emit(state.copyWith(status: PostStatus.error, error: e.error));
+    }
+  }
 }

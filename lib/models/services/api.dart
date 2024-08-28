@@ -22,7 +22,6 @@ class Api {
             final response = await http.Dio(
                     http.BaseOptions(baseUrl: "http://localhost:3001/"))
                 .post("info", data: {"refreshToken": refresh});
-            // await dio.post("info", data: {"refreshToken": refresh});
 
             await Storage.save("accessToken", response.data['accessToken']);
             await Storage.save("refreshToken", response.data['refreshToken']);
@@ -33,6 +32,7 @@ class Api {
           }
           return handler.next(error);
         } on http.DioException catch (error) {
+          log(error.error.toString());
           if (error.response!.statusCode == 401) {
             return handler.next(error);
           }
@@ -40,6 +40,7 @@ class Api {
       },
       onRequest: (options, handler) async {
         log("request");
+        log(options.method);
         log(options.path);
         final FutureOr<String> token = await Storage.get("accessToken") ?? "";
         options.headers['authorization'] = 'Bearer $token';

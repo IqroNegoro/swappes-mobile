@@ -4,8 +4,10 @@ import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:skeletonizer/skeletonizer.dart";
-import "package:swappes/bloc/post_bloc.dart";
+import "package:swappes/cubit/post_cubit.dart";
 import "package:swappes/models/post.dart";
+import "package:swappes/ui/comment.dart";
+import "package:swappes/ui/post_comments.dart";
 import "package:timeago/timeago.dart" as timeago;
 
 class Post extends StatelessWidget {
@@ -122,38 +124,40 @@ class Post extends StatelessWidget {
           children: [
             ElevatedButton.icon(
               onPressed: () {
-                // context.read<PostBloc>().add(PostEvent.likePost(post.id));
+                context.read<PostCubit>().likePost(post.id);
               },
               label: const Text(
                 "Like",
                 style: TextStyle(color: Colors.black),
               ),
-              // icon: BlocBuilder<PostBloc, PostState>(
-              //   builder: (context, state) {
-              //     return state.maybeWhen(
-              //       postLiking: (id) {
-              //         if (id == post.id) {
-              //           return const SizedBox(
-              //               width: 20,
-              //               height: 20,
-              //               child: CircularProgressIndicator(
-              //                   color: Colors.black,
-              //                   strokeAlign: BorderSide.strokeAlignCenter,
-              //                   strokeWidth: 1));
-              //         }
-              //         return const Icon(Icons.thumb_up);
-              //       },
-              //       postLiked: (id) {
-              //         return const Icon(Icons.thumb_up);
-              //       },
-              //       orElse: () => const Icon(Icons.thumb_up),
-              //     );
-              //   },
-              // ),
+              icon: BlocBuilder<PostCubit, PostState>(
+                buildWhen: (previous, current) => current.postId == post.id,
+                builder: (context, state) {
+                  if (state.status == PostStatus.liking) {
+                    return const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                            color: Colors.black,
+                            strokeAlign: BorderSide.strokeAlignCenter,
+                            strokeWidth: 1));
+                  } else {
+                    return const Icon(Icons.thumb_up);
+                  }
+                },
+              ),
             ),
             ElevatedButton.icon(
               onPressed: () {
-                // context.read<PostBloc>().add(PostEvent.showComments(post.id));
+                // context.read<PostCubit>().showComments(post.id);
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    backgroundColor: Colors.transparent,
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.zero)),
+                    context: context,
+                    builder: (_) => PostCommentsUI(post.id));
               },
               label: const Text(
                 "Comment",
