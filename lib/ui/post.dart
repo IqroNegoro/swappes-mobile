@@ -86,7 +86,6 @@ class Post extends StatelessWidget {
                         : const Radius.circular(0),
               ),
               child: CachedNetworkImage(
-                fadeInDuration: Duration.zero,
                 cacheKey: post.images[index]['discordId'],
                 imageUrl: post.images[index]['images'],
                 fit: BoxFit.cover,
@@ -149,14 +148,12 @@ class Post extends StatelessWidget {
             ),
             ElevatedButton.icon(
               onPressed: () {
-                // context.read<PostCubit>().showComments(post.id);
                 showModalBottomSheet(
+                    context: context,
                     isScrollControlled: true,
-                    enableDrag: true,
                     backgroundColor: Colors.transparent,
                     shape: const BeveledRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.zero)),
-                    context: context,
                     builder: (_) => PostCommentsUI(post.id));
               },
               label: const Text(

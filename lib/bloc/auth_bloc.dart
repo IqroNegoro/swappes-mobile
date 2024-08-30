@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/material.dart';
-import 'package:swappes/models/services/api.dart';
+import 'package:swappes/services/api.dart';
 import 'package:swappes/storage/storage.dart';
 
 part 'auth_event.dart';

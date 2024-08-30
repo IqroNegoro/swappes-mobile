@@ -26,7 +26,7 @@ final GoRouter _router =
   GoRoute(
     path: "/",
     name: "MainPage",
-    builder: (context, state) => MainPage(),
+    builder: (context, state) => const MainPage(),
   ),
   GoRoute(
     path: "/create",
@@ -64,7 +64,7 @@ class MainApp extends StatelessWidget {
             inputDecorationTheme: const InputDecorationTheme(
                 contentPadding: EdgeInsets.all(0),
                 focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black)),
+                    borderSide: BorderSide(color: Colors.transparent)),
                 border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
@@ -78,6 +78,8 @@ class MainApp extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
             ),
+            progressIndicatorTheme:
+                const ProgressIndicatorThemeData(color: Colors.black),
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ElevatedButton.styleFrom(
                     disabledBackgroundColor: Colors.black54,

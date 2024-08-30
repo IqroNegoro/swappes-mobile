@@ -9,7 +9,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/post.dart';
-import 'package:swappes/ui/post_comments.dart';
 import 'package:swappes/ui/post_skeleton.dart';
 
 class MainPage extends StatelessWidget {

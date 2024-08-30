@@ -22,11 +22,11 @@ CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
 mixin _$CommentModel {
   @JsonKey(name: "_id")
   String get id => throw _privateConstructorUsedError;
-  String get comment => throw _privateConstructorUsedError;
+  String? get comment => throw _privateConstructorUsedError;
   dynamic get image => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   String get post => throw _privateConstructorUsedError;
-  String get replyId => throw _privateConstructorUsedError;
+  String? get replyId => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -44,11 +44,11 @@ abstract class $CommentModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "_id") String id,
-      String comment,
+      String? comment,
       dynamic image,
       User user,
       String post,
-      String replyId,
+      String? replyId,
       String createdAt,
       String updatedAt});
 
@@ -69,11 +69,11 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
   @override
   $Res call({
     Object? id = null,
-    Object? comment = null,
+    Object? comment = freezed,
     Object? image = freezed,
     Object? user = null,
     Object? post = null,
-    Object? replyId = null,
+    Object? replyId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -82,10 +82,10 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      comment: null == comment
+      comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -98,10 +98,10 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
           ? _value.post
           : post // ignore: cast_nullable_to_non_nullable
               as String,
-      replyId: null == replyId
+      replyId: freezed == replyId
           ? _value.replyId
           : replyId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -132,11 +132,11 @@ abstract class _$$CommentModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "_id") String id,
-      String comment,
+      String? comment,
       dynamic image,
       User user,
       String post,
-      String replyId,
+      String? replyId,
       String createdAt,
       String updatedAt});
 
@@ -156,11 +156,11 @@ class __$$CommentModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? comment = null,
+    Object? comment = freezed,
     Object? image = freezed,
     Object? user = null,
     Object? post = null,
-    Object? replyId = null,
+    Object? replyId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -169,10 +169,10 @@ class __$$CommentModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      comment: null == comment
+      comment: freezed == comment
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -185,10 +185,10 @@ class __$$CommentModelImplCopyWithImpl<$Res>
           ? _value.post
           : post // ignore: cast_nullable_to_non_nullable
               as String,
-      replyId: null == replyId
+      replyId: freezed == replyId
           ? _value.replyId
           : replyId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -221,7 +221,7 @@ final class _$CommentModelImpl implements _CommentModel {
   @JsonKey(name: "_id")
   final String id;
   @override
-  final String comment;
+  final String? comment;
   @override
   final dynamic image;
   @override
@@ -229,7 +229,7 @@ final class _$CommentModelImpl implements _CommentModel {
   @override
   final String post;
   @override
-  final String replyId;
+  final String? replyId;
   @override
   final String createdAt;
   @override
@@ -287,11 +287,11 @@ final class _$CommentModelImpl implements _CommentModel {
 abstract final class _CommentModel implements CommentModel {
   factory _CommentModel(
       {@JsonKey(name: "_id") required final String id,
-      required final String comment,
+      required final String? comment,
       required final dynamic image,
       required final User user,
       required final String post,
-      required final String replyId,
+      required final String? replyId,
       required final String createdAt,
       required final String updatedAt}) = _$CommentModelImpl;
 
@@ -302,7 +302,7 @@ abstract final class _CommentModel implements CommentModel {
   @JsonKey(name: "_id")
   String get id;
   @override
-  String get comment;
+  String? get comment;
   @override
   dynamic get image;
   @override
@@ -310,7 +310,7 @@ abstract final class _CommentModel implements CommentModel {
   @override
   String get post;
   @override
-  String get replyId;
+  String? get replyId;
   @override
   String get createdAt;
   @override

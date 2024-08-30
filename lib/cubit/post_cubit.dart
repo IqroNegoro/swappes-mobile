@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:swappes/models/comment.dart';
 import 'package:swappes/models/post.dart';
-import 'package:swappes/models/services/api.dart';
+import 'package:swappes/services/api.dart';
 
 part 'post_state.dart';
 part 'post_cubit.freezed.dart';
@@ -68,25 +68,6 @@ class PostCubit extends Cubit<PostState> {
           posts: [PostModel.fromJson(post.data['post']), ...state.posts]));
     } on DioException catch (e) {
       log(e.error.toString());
-      emit(state.copyWith(status: PostStatus.error, error: e.error));
-    }
-  }
-
-  Future<void> showComments(String id) async {
-    if (state.status == PostStatus.showComment && state.postId == id) {
-      emit(state.copyWith(status: PostStatus.loaded));
-      return;
-    }
-    emit(state.copyWith(status: PostStatus.showComment, postId: id));
-    try {
-      final List<CommentModel> comments = [];
-      final data = await Api.dio.get("posts/$id/comments");
-      for (var x in data.data['data']) {
-        comments.add(CommentModel.fromJson(x));
-      }
-
-      emit(state.copyWith(comments: comments));
-    } on DioException catch (e) {
       emit(state.copyWith(status: PostStatus.error, error: e.error));
     }
   }

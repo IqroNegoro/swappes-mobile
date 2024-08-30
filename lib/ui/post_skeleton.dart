@@ -33,7 +33,7 @@ class PostSkeleton extends StatelessWidget {
             size: MediaQuery.sizeOf(context).width,
             borderRadius: BorderRadius.circular(12),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           const Padding(
             padding: EdgeInsets.all(5.0),
             child: Row(
@@ -57,7 +57,7 @@ class PostSkeleton extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

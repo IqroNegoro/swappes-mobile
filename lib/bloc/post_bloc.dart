@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:swappes/models/post.dart';
-import 'package:swappes/models/services/api.dart';
+import 'package:swappes/services/api.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'post_event.dart';
