@@ -6,13 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'package:swappes/cubit/auth_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
 
+  final TextEditingController nameController =
+      TextEditingController(text: "Nadila");
   final TextEditingController emailController =
-      TextEditingController(text: "iqronegoro0@gmail.com");
+      TextEditingController(text: "nadila@gmail.com");
   final TextEditingController passwordController =
-      TextEditingController(text: "iqro");
+      TextEditingController(text: "nadila");
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +38,21 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                "Mari Masuk",
+                "Yuk, Bikin Akun",
                 style: TextStyle(fontSize: 24),
               ),
-              const Text("Yuk, masuk dengan akun mu untuk melanjutkan"),
+              const Text("Bikin akun dulu untuk melanjutkan"),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text("Nama",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              TextField(
+                decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.account_circle),
+                    hintText: "Enter Your Name"),
+                controller: nameController,
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -72,9 +85,18 @@ class LoginPage extends StatelessWidget {
               BlocListener<AuthCubit, AuthState>(
                 listener: (context, state) {
                   state.maybeWhen(
-                      success: (user) {
-                        context.read<Profile>().saveUser(user);
-                        context.goNamed("MainPage");
+                      success: (_) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            "Register success, Please log in",
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ),
+                          showCloseIcon: true,
+                          backgroundColor: Color(0xFF18191A),
+                        ));
+                        context.goNamed("LoginPage");
                       },
                       orElse: () => null);
                 },
@@ -83,10 +105,12 @@ class LoginPage extends StatelessWidget {
                       minimumSize: const Size.fromHeight(50)),
                   onPressed: authState.maybeWhen(
                       loading: () => null,
-                      orElse: () => () => context.read<AuthCubit>().login(
-                          emailController.text, passwordController.text)),
+                      orElse: () => () => context.read<AuthCubit>().register(
+                          nameController.text,
+                          emailController.text,
+                          passwordController.text)),
                   child: const Text(
-                    "Masuk",
+                    "Register",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -94,19 +118,7 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: Colors.transparent),
-                  onPressed: () => context.goNamed("RegisterPage"),
-                  child: const Row(children: [
-                    Text("Belom punya akun? ",
-                        style: TextStyle(color: Colors.black)),
-                    Text("Buat yuk!",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600)),
-                  ]))
+              )
             ],
           ),
           const Spacer(

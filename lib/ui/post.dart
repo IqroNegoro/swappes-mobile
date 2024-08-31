@@ -3,10 +3,11 @@ import "dart:developer";
 import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:provider/provider.dart";
 import "package:skeletonizer/skeletonizer.dart";
 import "package:swappes/cubit/post_cubit.dart";
 import "package:swappes/models/post.dart";
-import "package:swappes/ui/comment.dart";
+import "package:swappes/providers/profile.dart";
 import "package:swappes/ui/post_comments.dart";
 import "package:timeago/timeago.dart" as timeago;
 
@@ -48,8 +49,75 @@ class Post extends StatelessWidget {
                 ],
               ),
               const Spacer(flex: 1),
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   child: const Icon(Icons.more_horiz),
+              // ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => Consumer<Profile>(
+                    builder: (_, value, child) => SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          value.id == post.user.id
+                              ? TextButton.icon(
+                                  onPressed: () {},
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      iconColor: Colors.black),
+                                  label: const Text("Edit",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500)),
+                                  icon: const Icon(Icons.edit),
+                                )
+                              : const SizedBox(),
+                          TextButton.icon(
+                            onPressed: () {},
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                iconColor: Colors.black),
+                            label: const Text("Save",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500)),
+                            icon: const Icon(Icons.bookmark),
+                          ),
+                          TextButton.icon(
+                            onPressed: () {},
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                iconColor: Colors.black),
+                            label: const Text("Copy Link",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500)),
+                            icon: const Icon(Icons.link),
+                          ),
+                          value.id == post.user.id
+                              ? TextButton.icon(
+                                  onPressed: () {},
+                                  style: TextButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      iconColor: Colors.red),
+                                  label: const Text("Delete",
+                                      style: TextStyle(color: Colors.red)),
+                                  icon: const Icon(Icons.delete),
+                                )
+                              : const SizedBox()
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 child: const Icon(Icons.more_horiz),
               )
             ],

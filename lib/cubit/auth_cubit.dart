@@ -11,6 +11,20 @@ part 'auth_cubit.freezed.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(const AuthState.initial());
 
+  Future<void> register(
+      final String name, final String email, final String password) async {
+    emit(const AuthState.loading());
+    try {
+      var login = await Api.dio.post("register",
+          data: {"name": name, "email": email, "password": password});
+
+      emit(AuthState.success());
+    } catch (error) {
+      emit(AuthState.error(error));
+      log(error.toString());
+    }
+  }
+
   Future<void> login(final String email, final String password) async {
     emit(const AuthState.loading());
     try {

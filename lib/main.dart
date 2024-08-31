@@ -10,6 +10,7 @@ import 'package:swappes/ui/splash_screen.dart';
 import 'package:swappes/views/create_post.dart';
 import 'package:swappes/views/login.dart';
 import 'package:swappes/views/main.dart';
+import 'package:swappes/views/register.dart';
 import "package:timeago/timeago.dart" as timeago;
 
 final GoRouter _router =
@@ -19,6 +20,10 @@ final GoRouter _router =
     name: "SplashPage",
     builder: (context, state) => const SplashScreenUI(),
   ),
+  GoRoute(
+      path: "/register",
+      name: "RegisterPage",
+      builder: (context, state) => RegisterPage()),
   GoRoute(
       path: "/login",
       name: "LoginPage",
@@ -72,7 +77,7 @@ class MainApp extends StatelessWidget {
                   disabledBackgroundColor: Colors.black54,
                   minimumSize: const Size(0, 0),
                   backgroundColor: const Color(0xFF18191A),
-                  // padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   // textStyle: const TextStyle(
                   //     color: Colors.black, fontWeight: FontWeight.w600),
                   alignment: Alignment.center,
