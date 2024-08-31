@@ -68,16 +68,25 @@ class MainApp extends StatelessWidget {
                 border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
+                  overlayColor: Colors.transparent,
                   disabledBackgroundColor: Colors.black54,
                   minimumSize: const Size(0, 0),
                   backgroundColor: const Color(0xFF18191A),
-                  padding: const EdgeInsets.all(16),
+                  // padding: const EdgeInsets.all(16),
                   // textStyle: const TextStyle(
                   //     color: Colors.black, fontWeight: FontWeight.w600),
                   alignment: Alignment.center,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(4))),
             ),
+            buttonTheme: const ButtonThemeData(
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                hoverColor: Colors.transparent),
+            iconButtonTheme: const IconButtonThemeData(
+                style: ButtonStyle(
+                    overlayColor: WidgetStatePropertyAll(Colors.transparent))),
             progressIndicatorTheme:
                 const ProgressIndicatorThemeData(color: Colors.black),
             elevatedButtonTheme: ElevatedButtonThemeData(

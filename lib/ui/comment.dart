@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/models/comment.dart';
 import 'package:swappes/providers/profile.dart';
+import 'package:swappes/ui/post_comments.dart';
 
 class CommentUI extends StatefulWidget {
   final CommentModel comment;
-  final Function(String id) handleDelete;
+  final Function(String commentId) handleDelete;
+  final Function(CommentModel comment) replyComment;
 
-  const CommentUI(this.comment, this.handleDelete, {super.key});
+  const CommentUI(this.comment, this.handleDelete, this.replyComment,
+      {super.key});
 
   @override
   State<CommentUI> createState() => _CommentUIState();
@@ -22,6 +27,7 @@ class _CommentUIState extends State<CommentUI> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(height: widget.comment.replyId != null ? 15 : 0),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,7 +73,7 @@ class _CommentUIState extends State<CommentUI> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: widget.comment.image != null ? 5 : 0),
                   widget.comment.image != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(6),
@@ -93,7 +99,7 @@ class _CommentUIState extends State<CommentUI> {
                         )
                       : const SizedBox(),
                   SizedBox(
-                    height: 30,
+                    height: 20,
                     child: Row(
                       children: [
                         TextButton(
@@ -102,9 +108,11 @@ class _CommentUIState extends State<CommentUI> {
                             backgroundColor: Colors.transparent,
                           ),
                           child: const Text("Reply",
-                              style: TextStyle(color: Colors.black)),
-                          onPressed: () {},
+                              style:
+                                  TextStyle(color: Color.fromRGBO(0, 0, 0, 1))),
+                          onPressed: () => widget.replyComment(widget.comment),
                         ),
+                        const SizedBox(width: 10),
                         Consumer<Profile>(
                           builder: (_, value, child) =>
                               value.id == widget.comment.user.id
@@ -124,6 +132,14 @@ class _CommentUIState extends State<CommentUI> {
                       ],
                     ),
                   ),
+                  widget.comment.reply.isNotEmpty
+                      ? Column(
+                          children: List.generate(
+                              widget.comment.reply.length,
+                              (index) => CommentUI(widget.comment.reply[index],
+                                  widget.handleDelete, widget.replyComment)),
+                        )
+                      : const SizedBox(),
                   const SizedBox(height: 20),
                 ],
               ),

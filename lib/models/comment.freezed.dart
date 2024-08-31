@@ -26,6 +26,7 @@ mixin _$CommentModel {
   dynamic get image => throw _privateConstructorUsedError;
   User get user => throw _privateConstructorUsedError;
   String get post => throw _privateConstructorUsedError;
+  List<CommentModel> get reply => throw _privateConstructorUsedError;
   String? get replyId => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
@@ -48,6 +49,7 @@ abstract class $CommentModelCopyWith<$Res> {
       dynamic image,
       User user,
       String post,
+      List<CommentModel> reply,
       String? replyId,
       String createdAt,
       String updatedAt});
@@ -73,6 +75,7 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
     Object? image = freezed,
     Object? user = null,
     Object? post = null,
+    Object? reply = null,
     Object? replyId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -98,6 +101,10 @@ class _$CommentModelCopyWithImpl<$Res, $Val extends CommentModel>
           ? _value.post
           : post // ignore: cast_nullable_to_non_nullable
               as String,
+      reply: null == reply
+          ? _value.reply
+          : reply // ignore: cast_nullable_to_non_nullable
+              as List<CommentModel>,
       replyId: freezed == replyId
           ? _value.replyId
           : replyId // ignore: cast_nullable_to_non_nullable
@@ -136,6 +143,7 @@ abstract class _$$CommentModelImplCopyWith<$Res>
       dynamic image,
       User user,
       String post,
+      List<CommentModel> reply,
       String? replyId,
       String createdAt,
       String updatedAt});
@@ -160,6 +168,7 @@ class __$$CommentModelImplCopyWithImpl<$Res>
     Object? image = freezed,
     Object? user = null,
     Object? post = null,
+    Object? reply = null,
     Object? replyId = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
@@ -185,6 +194,10 @@ class __$$CommentModelImplCopyWithImpl<$Res>
           ? _value.post
           : post // ignore: cast_nullable_to_non_nullable
               as String,
+      reply: null == reply
+          ? _value.reply
+          : reply // ignore: cast_nullable_to_non_nullable
+              as List<CommentModel>,
       replyId: freezed == replyId
           ? _value.replyId
           : replyId // ignore: cast_nullable_to_non_nullable
@@ -210,6 +223,7 @@ final class _$CommentModelImpl implements _CommentModel {
       required this.image,
       required this.user,
       required this.post,
+      this.reply = const [],
       required this.replyId,
       required this.createdAt,
       required this.updatedAt});
@@ -229,6 +243,9 @@ final class _$CommentModelImpl implements _CommentModel {
   @override
   final String post;
   @override
+  @JsonKey()
+  final List<CommentModel> reply;
+  @override
   final String? replyId;
   @override
   final String createdAt;
@@ -237,7 +254,7 @@ final class _$CommentModelImpl implements _CommentModel {
 
   @override
   String toString() {
-    return 'CommentModel(id: $id, comment: $comment, image: $image, user: $user, post: $post, replyId: $replyId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CommentModel(id: $id, comment: $comment, image: $image, user: $user, post: $post, reply: $reply, replyId: $replyId, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -250,6 +267,7 @@ final class _$CommentModelImpl implements _CommentModel {
             const DeepCollectionEquality().equals(other.image, image) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.post, post) || other.post == post) &&
+            const DeepCollectionEquality().equals(other.reply, reply) &&
             (identical(other.replyId, replyId) || other.replyId == replyId) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
@@ -266,6 +284,7 @@ final class _$CommentModelImpl implements _CommentModel {
       const DeepCollectionEquality().hash(image),
       user,
       post,
+      const DeepCollectionEquality().hash(reply),
       replyId,
       createdAt,
       updatedAt);
@@ -291,6 +310,7 @@ abstract final class _CommentModel implements CommentModel {
       required final dynamic image,
       required final User user,
       required final String post,
+      final List<CommentModel> reply,
       required final String? replyId,
       required final String createdAt,
       required final String updatedAt}) = _$CommentModelImpl;
@@ -309,6 +329,8 @@ abstract final class _CommentModel implements CommentModel {
   User get user;
   @override
   String get post;
+  @override
+  List<CommentModel> get reply;
   @override
   String? get replyId;
   @override

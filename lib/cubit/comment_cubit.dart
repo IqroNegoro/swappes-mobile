@@ -52,12 +52,48 @@ class CommentCubit extends Cubit<CommentState> {
     }
   }
 
-  Future<void> deleteComment(String id, String postId) async {
+  Future<void> deleteComment(
+      String commentId, String postId, String? replyId) async {
     emit(CommentState.deleteComment(postId));
     try {
-      final comment = await Api.dio
-          .delete("posts/$postId/comments/$id", data: {"id": id, "postId": postId});
-      commentsState.removeWhere((element) => element.id == id);
+      final comment = await Api.dio.delete("posts/$postId/comments/$commentId",
+          data: {"id": commentId, "postId": postId});
+      if (replyId != null) {
+        commentsState
+            .firstWhere((element) => element.id == replyId)
+            .reply
+            .removeWhere((element) => element.id == commentId);
+      } else {
+        commentsState.removeWhere((element) => element.id == commentId);
+      }
+      emit(CommentState.loaded(commentsState));
+    } on DioException catch (e) {
+      emit(CommentState.error(e.error));
+    }
+  }
+
+  Future<void> replyComment(String postId, String? comment, File? commentImage,
+      String replyId) async {
+    if (comment == null && comment!.isEmpty && commentImage == null) return;
+    emit(CommentState.postComment(postId));
+    try {
+      MultipartFile? image;
+      if (commentImage != null) {
+        image = MultipartFile.fromFileSync(commentImage.path,
+            filename: commentImage.path.split("/").last);
+      }
+
+      final commentResponse = await Api.dio.post("posts/$postId/comments",
+          data: FormData.fromMap({
+            "id": postId,
+            "comment": comment,
+            "image": image,
+            "replyId": replyId
+          }));
+      final CommentModel commentReply =
+          commentsState.firstWhere((element) => element.id == replyId);
+      commentReply.reply
+          .add(CommentModel.fromJson(commentResponse.data['data']));
       emit(CommentState.loaded(commentsState));
     } on DioException catch (e) {
       emit(CommentState.error(e.error));

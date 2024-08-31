@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swappes/cubit/comment_cubit.dart';
+import 'package:swappes/models/comment.dart';
+import 'package:swappes/models/post.dart';
 import 'package:swappes/ui/comment.dart';
 import 'package:swappes/ui/comment_skeleton.dart';
 
@@ -23,6 +25,8 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
   File? _image;
   final picker = ImagePicker();
 
+  CommentModel? replying;
+
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -40,77 +44,133 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
     _getComments = _cubit..getComments(widget.id);
   }
 
-  void handleDelete(String id) => _cubit.deleteComment(id, widget.id);
+  void replyComment(CommentModel comment) {
+    setState(() {
+      replying =
+          replying != null && replying!.id == comment.id ? null : comment;
+    });
+  }
+
+  void handleDelete(String commentId) =>
+      _cubit.deleteComment(commentId, widget.id, replying?.id);
+
+  void handleReply() =>
+      _cubit.replyComment(widget.id, _comment.text, _image, replying!.id);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
       bottomSheet: Container(
         color: Colors.white,
         padding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              flex: 1,
-              child: TextField(
-                controller: _comment,
-                decoration: const InputDecoration(
-                  hintText: "Write what your comment...",
-                  hintStyle: TextStyle(fontSize: 14),
-                  filled: true,
-                  fillColor: Colors.black12,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            _image != null
-                ? GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _image = null;
-                      });
-                    },
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      child: Image.file(
-                        _image!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+            replying != null
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Replying to ${replying!.user.name}, "),
+                      // TextButton(
+                      //   style: TextButton.styleFrom(
+                      //     // backgroundColor: Colors.transparent,
+                      //     padding: const EdgeInsets.all(0),
+                      //   ),
+                      //   child: const Text("Cancel",
+                      //       style: TextStyle(
+                      //           fontWeight: FontWeight.w600,
+                      //           color: Colors.black)),
+                      //   onPressed: () {
+                      //     setState(() => replying = null);
+                      //   },
+                      // ),
+                      GestureDetector(
+                        onTap: () => setState(() {
+                          replying = null;
+                        }),
+                        child: const Text("Cancel",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                      )
+                    ],
                   )
-                : Container(
-                    width: 48,
-                    height: 48,
-                    color: Colors.black12,
-                    child: IconButton(
-                      onPressed: () => getImageFromGallery(),
-                      icon: const Icon(Icons.image),
+                : const SizedBox(),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: TextField(
+                    controller: _comment,
+                    decoration: InputDecoration(
+                      hintText:
+                          "Write what your ${replying != null ? 'reply' : 'comment'}...",
+                      hintStyle: const TextStyle(fontSize: 14),
+                      filled: true,
+                      fillColor: Colors.black12,
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 15),
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
                   ),
-            BlocBuilder<CommentCubit, CommentState>(
-              bloc: _cubit,
-              builder: (context, state) => IconButton(
-                  style: IconButton.styleFrom(
-                      disabledForegroundColor: Colors.black12),
-                  onPressed: state.maybeWhen(
-                      orElse: () => () {
-                            _cubit.postComment(
-                                widget.id, _comment.text, _image);
-                          },
-                      postComment: (_) => null),
-                  icon: const Icon(Icons.send)),
-            )
+                ),
+                const SizedBox(width: 10),
+                _image != null
+                    ? GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _image = null;
+                          });
+                        },
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Image.file(
+                            _image!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: 48,
+                        height: 48,
+                        color: Colors.black12,
+                        child: IconButton(
+                          onPressed: () => getImageFromGallery(),
+                          icon: const Icon(Icons.image),
+                        ),
+                      ),
+                BlocBuilder<CommentCubit, CommentState>(
+                  bloc: _cubit,
+                  builder: (context, state) => IconButton(
+                      style: IconButton.styleFrom(
+                          disabledForegroundColor: Colors.black12),
+                      onPressed: state.maybeWhen(
+                          orElse: () => () {
+                                replying != null
+                                    ? handleReply()
+                                    : _cubit.postComment(
+                                        widget.id, _comment.text, _image);
+                              },
+                          postComment: (_) => null),
+                      icon: const Icon(Icons.send)),
+                )
+              ],
+            ),
           ],
         ),
       ),
@@ -144,10 +204,21 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: BlocConsumer<CommentCubit, CommentState>(
                       bloc: _getComments,
-                      listenWhen: (previous, current) => previous.maybeWhen(
+                      listenWhen: (previous, current) => current.maybeWhen(
                           orElse: () => true, deleteComment: (_) => false),
                       listener: (context, state) {
                         state.maybeWhen(
+                            error: (error) => ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    "Something wrong, please try again",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  showCloseIcon: true,
+                                  backgroundColor: Color(0xFF18191A),
+                                )),
                             loaded: (_) {
                               setState(() {
                                 _comment.text = "";
@@ -157,10 +228,13 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                             orElse: () {});
                       },
                       buildWhen: (previous, current) {
-                        return current.maybeWhen(
-                            orElse: () => true,
-                            postComment: (_) => false,
-                            deleteComment: (_) => false);
+                        return previous.maybeWhen(
+                                orElse: () => true,
+                                deleteComment: (_) => false) &&
+                            current.maybeWhen(
+                                orElse: () => true,
+                                postComment: (_) => false,
+                                deleteComment: (_) => false);
                       },
                       builder: (context, state) {
                         return ListView(
@@ -177,8 +251,8 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                                       ]
                                     : List.generate(
                                         comments.length,
-                                        (index) => CommentUI(
-                                            comments[index], handleDelete)),
+                                        (index) => CommentUI(comments[index],
+                                            handleDelete, replyComment)),
                                 error: (_) =>
                                     [const Text("Error when load comment")]));
                       },
