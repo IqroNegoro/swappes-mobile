@@ -18,7 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
       var login = await Api.dio.post("register",
           data: {"name": name, "email": email, "password": password});
 
-      emit(AuthState.success());
+      emit(const AuthState.success());
     } catch (error) {
       emit(AuthState.error(error));
       log(error.toString());

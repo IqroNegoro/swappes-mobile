@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PostState {
   List<PostModel> get posts => throw _privateConstructorUsedError;
+  PostModel? get post => throw _privateConstructorUsedError;
   List<CommentModel> get comments => throw _privateConstructorUsedError;
   PostStatus get status => throw _privateConstructorUsedError;
   String? get postId => throw _privateConstructorUsedError;
@@ -34,10 +35,13 @@ abstract class $PostStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<PostModel> posts,
+      PostModel? post,
       List<CommentModel> comments,
       PostStatus status,
       String? postId,
       dynamic error});
+
+  $PostModelCopyWith<$Res>? get post;
 }
 
 /// @nodoc
@@ -54,6 +58,7 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
   @override
   $Res call({
     Object? posts = null,
+    Object? post = freezed,
     Object? comments = null,
     Object? status = null,
     Object? postId = freezed,
@@ -64,6 +69,10 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
               as List<PostModel>,
+      post: freezed == post
+          ? _value.post
+          : post // ignore: cast_nullable_to_non_nullable
+              as PostModel?,
       comments: null == comments
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -82,6 +91,18 @@ class _$PostStateCopyWithImpl<$Res, $Val extends PostState>
               as dynamic,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PostModelCopyWith<$Res>? get post {
+    if (_value.post == null) {
+      return null;
+    }
+
+    return $PostModelCopyWith<$Res>(_value.post!, (value) {
+      return _then(_value.copyWith(post: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -94,10 +115,14 @@ abstract class _$$PostStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<PostModel> posts,
+      PostModel? post,
       List<CommentModel> comments,
       PostStatus status,
       String? postId,
       dynamic error});
+
+  @override
+  $PostModelCopyWith<$Res>? get post;
 }
 
 /// @nodoc
@@ -112,6 +137,7 @@ class __$$PostStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? posts = null,
+    Object? post = freezed,
     Object? comments = null,
     Object? status = null,
     Object? postId = freezed,
@@ -122,6 +148,10 @@ class __$$PostStateImplCopyWithImpl<$Res>
           ? _value.posts
           : posts // ignore: cast_nullable_to_non_nullable
               as List<PostModel>,
+      post: freezed == post
+          ? _value.post
+          : post // ignore: cast_nullable_to_non_nullable
+              as PostModel?,
       comments: null == comments
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -147,6 +177,7 @@ class __$$PostStateImplCopyWithImpl<$Res>
 class _$PostStateImpl implements _PostState {
   _$PostStateImpl(
       {this.posts = const [],
+      this.post,
       this.comments = const [],
       this.status = PostStatus.initial,
       this.postId,
@@ -155,6 +186,8 @@ class _$PostStateImpl implements _PostState {
   @override
   @JsonKey()
   final List<PostModel> posts;
+  @override
+  final PostModel? post;
   @override
   @JsonKey()
   final List<CommentModel> comments;
@@ -168,7 +201,7 @@ class _$PostStateImpl implements _PostState {
 
   @override
   String toString() {
-    return 'PostState(posts: $posts, comments: $comments, status: $status, postId: $postId, error: $error)';
+    return 'PostState(posts: $posts, post: $post, comments: $comments, status: $status, postId: $postId, error: $error)';
   }
 
   @override
@@ -177,6 +210,7 @@ class _$PostStateImpl implements _PostState {
         (other.runtimeType == runtimeType &&
             other is _$PostStateImpl &&
             const DeepCollectionEquality().equals(other.posts, posts) &&
+            (identical(other.post, post) || other.post == post) &&
             const DeepCollectionEquality().equals(other.comments, comments) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.postId, postId) || other.postId == postId) &&
@@ -187,6 +221,7 @@ class _$PostStateImpl implements _PostState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(posts),
+      post,
       const DeepCollectionEquality().hash(comments),
       status,
       postId,
@@ -202,6 +237,7 @@ class _$PostStateImpl implements _PostState {
 abstract class _PostState implements PostState {
   factory _PostState(
       {final List<PostModel> posts,
+      final PostModel? post,
       final List<CommentModel> comments,
       final PostStatus status,
       final String? postId,
@@ -209,6 +245,8 @@ abstract class _PostState implements PostState {
 
   @override
   List<PostModel> get posts;
+  @override
+  PostModel? get post;
   @override
   List<CommentModel> get comments;
   @override

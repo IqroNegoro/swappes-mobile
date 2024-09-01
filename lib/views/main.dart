@@ -48,7 +48,7 @@ class MainPage extends StatelessWidget {
             backgroundColor: const Color(0xFF18191A),
             onRefresh: () async {
               Future.sync(() {
-                context.read<PostCubit>().getPost();
+                context.read<PostCubit>().getPosts();
               });
             },
             child: NotificationListener<OverscrollIndicatorNotification>(
@@ -102,7 +102,10 @@ class MainPage extends StatelessWidget {
                     buildWhen: (previous, current) =>
                         current.status != PostStatus.creating &&
                         current.status != PostStatus.liking &&
-                        current.status != PostStatus.showComment,
+                        current.status != PostStatus.showComment &&
+                        current.status != PostStatus.saving &&
+                        current.status != PostStatus.deleting &&
+                        current.status != PostStatus.sharing,
                     builder: (context, state) {
                       if (state.status == PostStatus.loading) {
                         return const PostSkeleton();
@@ -124,19 +127,6 @@ class MainPage extends StatelessWidget {
               ),
             ),
           ),
-          // BlocBuilder<PostCubit, PostState>(
-          //   buildWhen: (previous, current) =>
-          //       current.status == PostStatus.showComment &&
-          //       current.postId != null,
-          //   builder: (context, state) {
-          //     if (state.postId != null) {
-          //       return PostCommentsUI(state.postId!);
-          //     } else {
-          //       return const SizedBox();
-          //     }
-          //   },
-          // )
-          // PostCommentsUI(id)
         ],
       ),
     );

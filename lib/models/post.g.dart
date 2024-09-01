@@ -10,10 +10,11 @@ _$PostModelImpl _$$PostModelImplFromJson(Map<String, dynamic> json) =>
     _$PostModelImpl(
       id: json['_id'] as String,
       description: json['description'] as String?,
-      images: json['images'] as List<dynamic>,
+      images: json['images'] as List<dynamic>? ?? const [],
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       likes: json['likes'] as List<dynamic>? ?? const [],
       comments: (json['comments'] as num?)?.toInt() ?? 0,
+      bookmark: json['bookmark'],
       isShare: json['isShare'] as bool? ?? false,
       share: json['share'] == null
           ? null
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$PostModelImplToJson(_$PostModelImpl instance) =>
       'user': instance.user,
       'likes': instance.likes,
       'comments': instance.comments,
+      'bookmark': instance.bookmark,
       'isShare': instance.isShare,
       'share': instance.share,
       'createdAt': instance.createdAt,

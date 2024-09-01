@@ -176,7 +176,7 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
       ),
       body: DraggableScrollableSheet(
         initialChildSize: 1,
-        minChildSize: 0.5,
+        minChildSize: 0.8,
         maxChildSize: 1,
         snap: true,
         builder: (_, scrollController) => Container(

@@ -9,10 +9,11 @@ final class PostModel with _$PostModel {
   factory PostModel(
       {@JsonKey(name: "_id") required final String id,
       final String? description,
-      required List<dynamic> images,
+      @Default([]) List<dynamic> images,
       required User user,
       @Default([]) List<dynamic> likes,
       @Default(0) int comments,
+      final dynamic bookmark,
       @Default(false) final bool isShare,
       required final PostModel? share,
       required final String createdAt,

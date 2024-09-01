@@ -27,6 +27,7 @@ mixin _$PostModel {
   User get user => throw _privateConstructorUsedError;
   List<dynamic> get likes => throw _privateConstructorUsedError;
   int get comments => throw _privateConstructorUsedError;
+  dynamic get bookmark => throw _privateConstructorUsedError;
   bool get isShare => throw _privateConstructorUsedError;
   PostModel? get share => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $PostModelCopyWith<$Res> {
       User user,
       List<dynamic> likes,
       int comments,
+      dynamic bookmark,
       bool isShare,
       PostModel? share,
       String createdAt,
@@ -78,6 +80,7 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
     Object? user = null,
     Object? likes = null,
     Object? comments = null,
+    Object? bookmark = freezed,
     Object? isShare = null,
     Object? share = freezed,
     Object? createdAt = null,
@@ -108,6 +111,10 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
               as int,
+      bookmark: freezed == bookmark
+          ? _value.bookmark
+          : bookmark // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       isShare: null == isShare
           ? _value.isShare
           : isShare // ignore: cast_nullable_to_non_nullable
@@ -163,6 +170,7 @@ abstract class _$$PostModelImplCopyWith<$Res>
       User user,
       List<dynamic> likes,
       int comments,
+      dynamic bookmark,
       bool isShare,
       PostModel? share,
       String createdAt,
@@ -191,6 +199,7 @@ class __$$PostModelImplCopyWithImpl<$Res>
     Object? user = null,
     Object? likes = null,
     Object? comments = null,
+    Object? bookmark = freezed,
     Object? isShare = null,
     Object? share = freezed,
     Object? createdAt = null,
@@ -221,6 +230,10 @@ class __$$PostModelImplCopyWithImpl<$Res>
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
               as int,
+      bookmark: freezed == bookmark
+          ? _value.bookmark
+          : bookmark // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       isShare: null == isShare
           ? _value.isShare
           : isShare // ignore: cast_nullable_to_non_nullable
@@ -247,10 +260,11 @@ final class _$PostModelImpl implements _PostModel {
   _$PostModelImpl(
       {@JsonKey(name: "_id") required this.id,
       this.description,
-      required final List<dynamic> images,
+      final List<dynamic> images = const [],
       required this.user,
       final List<dynamic> likes = const [],
       this.comments = 0,
+      this.bookmark,
       this.isShare = false,
       required this.share,
       required this.createdAt,
@@ -268,6 +282,7 @@ final class _$PostModelImpl implements _PostModel {
   final String? description;
   final List<dynamic> _images;
   @override
+  @JsonKey()
   List<dynamic> get images {
     if (_images is EqualUnmodifiableListView) return _images;
     // ignore: implicit_dynamic_type
@@ -289,6 +304,8 @@ final class _$PostModelImpl implements _PostModel {
   @JsonKey()
   final int comments;
   @override
+  final dynamic bookmark;
+  @override
   @JsonKey()
   final bool isShare;
   @override
@@ -300,7 +317,7 @@ final class _$PostModelImpl implements _PostModel {
 
   @override
   String toString() {
-    return 'PostModel(id: $id, description: $description, images: $images, user: $user, likes: $likes, comments: $comments, isShare: $isShare, share: $share, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PostModel(id: $id, description: $description, images: $images, user: $user, likes: $likes, comments: $comments, bookmark: $bookmark, isShare: $isShare, share: $share, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -316,6 +333,7 @@ final class _$PostModelImpl implements _PostModel {
             const DeepCollectionEquality().equals(other._likes, _likes) &&
             (identical(other.comments, comments) ||
                 other.comments == comments) &&
+            const DeepCollectionEquality().equals(other.bookmark, bookmark) &&
             (identical(other.isShare, isShare) || other.isShare == isShare) &&
             (identical(other.share, share) || other.share == share) &&
             (identical(other.createdAt, createdAt) ||
@@ -334,6 +352,7 @@ final class _$PostModelImpl implements _PostModel {
       user,
       const DeepCollectionEquality().hash(_likes),
       comments,
+      const DeepCollectionEquality().hash(bookmark),
       isShare,
       share,
       createdAt,
@@ -357,10 +376,11 @@ abstract final class _PostModel implements PostModel {
   factory _PostModel(
       {@JsonKey(name: "_id") required final String id,
       final String? description,
-      required final List<dynamic> images,
+      final List<dynamic> images,
       required final User user,
       final List<dynamic> likes,
       final int comments,
+      final dynamic bookmark,
       final bool isShare,
       required final PostModel? share,
       required final String createdAt,
@@ -382,6 +402,8 @@ abstract final class _PostModel implements PostModel {
   List<dynamic> get likes;
   @override
   int get comments;
+  @override
+  dynamic get bookmark;
   @override
   bool get isShare;
   @override

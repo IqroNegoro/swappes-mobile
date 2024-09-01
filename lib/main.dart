@@ -8,6 +8,7 @@ import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/splash_screen.dart';
 import 'package:swappes/views/create_post.dart';
+import 'package:swappes/views/edit_post.dart';
 import 'package:swappes/views/login.dart';
 import 'package:swappes/views/main.dart';
 import 'package:swappes/views/register.dart';
@@ -37,7 +38,12 @@ final GoRouter _router =
     path: "/create",
     name: "CreatePost",
     builder: (context, state) => const CreatePostUI(),
-  )
+  ),
+  GoRoute(
+    path: "/edit/:id",
+    name: "EditPost",
+    builder: (context, state) => EditPostUI(state.pathParameters['id']!),
+  ),
 ]);
 void main() async {
   timeago.setLocaleMessages("id", timeago.IdMessages());
@@ -45,7 +51,7 @@ void main() async {
       builder: (context, _) => MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (_) => PostCubit()..getPost(),
+                create: (_) => PostCubit()..getPosts(),
               ),
               BlocProvider(
                 create: (_) => AuthCubit(),

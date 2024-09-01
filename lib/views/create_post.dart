@@ -80,8 +80,6 @@ class _CreatePostUIState extends State<CreatePostUI> {
               children: [
                 BlocListener<PostCubit, PostState>(
                   listener: (context, state) {
-                    log("creating...");
-                    log(state.status.toString());
                     if (state.status == PostStatus.loaded) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         behavior: SnackBarBehavior.floating,
@@ -140,7 +138,7 @@ class _CreatePostUIState extends State<CreatePostUI> {
                   maxLines: 15,
                   autofocus: true,
                   decoration: const InputDecoration(
-                    hintText: "Write your thinking...",
+                    hintText: "Write what your thinking...",
                     border: OutlineInputBorder(borderSide: BorderSide.none),
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.transparent)),
