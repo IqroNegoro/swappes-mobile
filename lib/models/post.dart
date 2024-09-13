@@ -15,7 +15,7 @@ final class PostModel with _$PostModel {
       @Default(0) int comments,
       final dynamic bookmark,
       @Default(false) final bool isShare,
-      required final PostModel? share,
+      required final dynamic share,
       required final String createdAt,
       required final String updatedAt}) = _PostModel;
 

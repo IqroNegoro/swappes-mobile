@@ -16,9 +16,7 @@ _$PostModelImpl _$$PostModelImplFromJson(Map<String, dynamic> json) =>
       comments: (json['comments'] as num?)?.toInt() ?? 0,
       bookmark: json['bookmark'],
       isShare: json['isShare'] as bool? ?? false,
-      share: json['share'] == null
-          ? null
-          : PostModel.fromJson(json['share'] as Map<String, dynamic>),
+      share: json['share'],
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
     );

@@ -1,9 +1,7 @@
-import "dart:developer";
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';

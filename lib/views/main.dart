@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +20,10 @@ class MainPage extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 241, 241, 241),
         surfaceTintColor: Colors.transparent,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications),
+            onPressed: () => context.pushNamed("NotificationsPage"),
+          ),
           ElevatedButton(
             onPressed: () {},
             child: Consumer<Profile>(
@@ -117,8 +119,9 @@ class MainPage extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: state.posts.length,
-                            itemBuilder: (_, index) =>
-                                Post(post: state.posts[index]));
+                            itemBuilder: (_, index) => Post(
+                                post: state.posts[index],
+                                bloc: context.read<PostCubit>()));
                       }
                       return const PostSkeleton();
                     },

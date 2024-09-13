@@ -24,7 +24,9 @@ mixin _$User {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   Avatar get avatar => throw _privateConstructorUsedError;
-  String? get banner => throw _privateConstructorUsedError;
+  dynamic get banner => throw _privateConstructorUsedError;
+  int get friends => throw _privateConstructorUsedError;
+  dynamic get isFriend => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,7 +42,9 @@ abstract class $UserCopyWith<$Res> {
       {@JsonKey(name: "_id") String id,
       String name,
       Avatar avatar,
-      String? banner});
+      dynamic banner,
+      int friends,
+      dynamic isFriend});
 
   $AvatarCopyWith<$Res> get avatar;
 }
@@ -62,6 +66,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? avatar = null,
     Object? banner = freezed,
+    Object? friends = null,
+    Object? isFriend = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -79,7 +85,15 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       banner: freezed == banner
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
+      friends: null == friends
+          ? _value.friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as int,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 
@@ -103,7 +117,9 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {@JsonKey(name: "_id") String id,
       String name,
       Avatar avatar,
-      String? banner});
+      dynamic banner,
+      int friends,
+      dynamic isFriend});
 
   @override
   $AvatarCopyWith<$Res> get avatar;
@@ -123,6 +139,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? name = null,
     Object? avatar = null,
     Object? banner = freezed,
+    Object? friends = null,
+    Object? isFriend = freezed,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -140,7 +158,15 @@ class __$$UserImplCopyWithImpl<$Res>
       banner: freezed == banner
           ? _value.banner
           : banner // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
+      friends: null == friends
+          ? _value.friends
+          : friends // ignore: cast_nullable_to_non_nullable
+              as int,
+      isFriend: freezed == isFriend
+          ? _value.isFriend
+          : isFriend // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -152,7 +178,9 @@ final class _$UserImpl implements _User {
       {@JsonKey(name: "_id") required this.id,
       required this.name,
       required this.avatar,
-      this.banner});
+      this.banner,
+      this.friends = 0,
+      this.isFriend});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserImplFromJson(json);
@@ -165,11 +193,16 @@ final class _$UserImpl implements _User {
   @override
   final Avatar avatar;
   @override
-  final String? banner;
+  final dynamic banner;
+  @override
+  @JsonKey()
+  final int friends;
+  @override
+  final dynamic isFriend;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, avatar: $avatar, banner: $banner)';
+    return 'User(id: $id, name: $name, avatar: $avatar, banner: $banner, friends: $friends, isFriend: $isFriend)';
   }
 
   @override
@@ -180,12 +213,21 @@ final class _$UserImpl implements _User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.banner, banner) || other.banner == banner));
+            const DeepCollectionEquality().equals(other.banner, banner) &&
+            (identical(other.friends, friends) || other.friends == friends) &&
+            const DeepCollectionEquality().equals(other.isFriend, isFriend));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, avatar, banner);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      avatar,
+      const DeepCollectionEquality().hash(banner),
+      friends,
+      const DeepCollectionEquality().hash(isFriend));
 
   @JsonKey(ignore: true)
   @override
@@ -206,7 +248,9 @@ abstract final class _User implements User {
       {@JsonKey(name: "_id") required final String id,
       required final String name,
       required final Avatar avatar,
-      final String? banner}) = _$UserImpl;
+      final dynamic banner,
+      final int friends,
+      final dynamic isFriend}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -218,7 +262,11 @@ abstract final class _User implements User {
   @override
   Avatar get avatar;
   @override
-  String? get banner;
+  dynamic get banner;
+  @override
+  int get friends;
+  @override
+  dynamic get isFriend;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

@@ -6,16 +6,13 @@ part "user.g.dart";
 
 @freezed
 final class User with _$User {
-  // final String id;
-  // final String name;
-  // final Avatar avatar;
-  // final String? banner;
-
   factory User({
     @JsonKey(name: "_id") required final String id,
     required final String name,
     required final Avatar avatar,
-    final String? banner,
+    final dynamic banner,
+    @Default(0) final int friends,
+    final dynamic isFriend,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

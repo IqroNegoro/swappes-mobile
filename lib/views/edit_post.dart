@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/post_cubit.dart';
-import 'package:swappes/models/post.dart';
 import 'package:swappes/providers/profile.dart';
-import 'package:swappes/services/api.dart';
+import 'package:swappes/ui/shared_post.dart';
 
 class EditPostUI extends StatefulWidget {
   final String id;
@@ -179,91 +177,100 @@ class _EditPostUIState extends State<EditPostUI> {
                             borderSide: BorderSide(color: Colors.transparent)),
                       ),
                     ),
-                    ...List.generate(
-                      _oldImages.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _oldImages.removeAt(index);
-                          });
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 200,
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          clipBehavior: Clip.hardEdge,
-                          child: CachedNetworkImage(
-                            cacheKey: _oldImages[index]['discordId'],
-                            imageUrl: _oldImages[index]['images']!,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) => Container(
-                              color: Colors.black12,
-                              child: const Center(
-                                  child: Text("Image Cannot Displayed")),
-                            ),
-                            placeholder: (context, url) => const Skeletonizer(
-                              effect: PulseEffect(),
-                              child: Bone.square(
-                                size: double.infinity,
+                    ...state.post?.isShare == true
+                        ? const []
+                        : List.generate(
+                            _oldImages.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _oldImages.removeAt(index);
+                                });
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 200,
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                                child: CachedNetworkImage(
+                                  cacheKey: _oldImages[index]['discordId'],
+                                  imageUrl: _oldImages[index]['images']!,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    color: Colors.black12,
+                                    child: const Center(
+                                        child: Text("Image Cannot Displayed")),
+                                  ),
+                                  placeholder: (context, url) =>
+                                      const Skeletonizer(
+                                    effect: PulseEffect(),
+                                    child: Bone.square(
+                                      size: double.infinity,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                    ...List.generate(
-                      _images.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _images.removeAt(index);
-                          });
-                        },
-                        child: Container(
-                            width: double.infinity,
-                            height: 200,
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(8),
+                    ...state.post?.isShare == true
+                        ? []
+                        : List.generate(
+                            _images.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _images.removeAt(index);
+                                });
+                              },
+                              child: Container(
+                                  width: double.infinity,
+                                  height: 200,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: Image.file(
+                                    _images[index],
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
-                            clipBehavior: Clip.hardEdge,
-                            child: Image.file(
-                              _images[index],
-                              fit: BoxFit.cover,
-                            )),
-                      ),
-                    ),
-                    Visibility(
-                      visible: !(_oldImages.length + _images.length >= 4),
-                      child: Container(
-                        width: double.infinity,
-                        height: 200,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () => getImageFromGallery(),
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.image,
-                                color: Colors.white,
-                              ),
-                              Text("Add Image",
-                                  style: TextStyle(color: Colors.white))
-                            ],
                           ),
-                        ),
-                      ),
-                    ),
+                    state.post?.isShare == true
+                        ? SharedPostUI(post: state.post!.share!)
+                        : Visibility(
+                            visible: !(_oldImages.length + _images.length >= 4),
+                            child: Container(
+                              width: double.infinity,
+                              height: 200,
+                              margin: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: ElevatedButton(
+                                onPressed: () => getImageFromGallery(),
+                                child: const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.image,
+                                      color: Colors.white,
+                                    ),
+                                    Text("Add Image",
+                                        style: TextStyle(color: Colors.white))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               ),

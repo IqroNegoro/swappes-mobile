@@ -1,5 +1,3 @@
-import "dart:developer";
-
 import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
@@ -17,7 +15,8 @@ import "package:timeago/timeago.dart" as timeago;
 
 class Post extends StatelessWidget {
   final PostModel post;
-  const Post({super.key, required this.post});
+  final PostCubit bloc;
+  const Post({super.key, required this.post, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
@@ -27,26 +26,46 @@ class Post extends StatelessWidget {
           padding: const EdgeInsets.all(15.0),
           child: Row(
             children: [
-              CachedNetworkImage(
-                imageUrl: post.user.avatar.url ?? "",
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
-                errorWidget: (context, url, error) =>
-                    const CircleAvatar(backgroundColor: Colors.black12),
-                placeholder: (context, url) => const Skeletonizer(
-                  effect: PulseEffect(),
-                  child: Bone.circle(size: 2 * 20),
+              ElevatedButton(
+                onPressed: () => context
+                    .pushNamed("UserId", pathParameters: {"id": post.user.id}),
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(0),
+                    minimumSize: const Size(0, 0),
+                    backgroundColor: Colors.transparent),
+                child: CachedNetworkImage(
+                  imageUrl: post.user.avatar.url ?? "",
+                  imageBuilder: (context, imageProvider) => CircleAvatar(
+                    backgroundImage: imageProvider,
+                  ),
+                  errorWidget: (context, url, error) =>
+                      const CircleAvatar(backgroundColor: Colors.black12),
+                  placeholder: (context, url) => const Skeletonizer(
+                    effect: PulseEffect(),
+                    child: Bone.circle(size: 2 * 20),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    post.user.name,
-                    style: const TextStyle(
-                        letterSpacing: 0.5, fontWeight: FontWeight.w600),
+                  SizedBox(
+                    height: 15,
+                    child: TextButton(
+                      onPressed: () => context.pushNamed("UserId",
+                          pathParameters: {"id": post.user.id}),
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          padding: const EdgeInsets.all(0)),
+                      child: Text(
+                        post.user.name,
+                        style: const TextStyle(
+                            letterSpacing: 0.5,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
+                      ),
+                    ),
                   ),
                   Text(
                       timeago.format(DateTime.parse(post.createdAt)).toString())
@@ -198,10 +217,14 @@ class Post extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(
               left: 15, right: 15, bottom: post.isShare ? 0 : 15),
-          child: Text(post.description!),
+          child: Text(post.description ?? ""),
         ),
         post.isShare
-            ? SharedPostUI(post: post.share!)
+            ? post.share == null
+                ? const SizedBox(
+                    height: 100,
+                    child: Center(child: Text("Shared Post Cannot Loaded")))
+                : SharedPostUI(post: post.share ?? "")
             : GridView(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,

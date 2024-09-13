@@ -29,7 +29,7 @@ mixin _$PostModel {
   int get comments => throw _privateConstructorUsedError;
   dynamic get bookmark => throw _privateConstructorUsedError;
   bool get isShare => throw _privateConstructorUsedError;
-  PostModel? get share => throw _privateConstructorUsedError;
+  dynamic get share => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -53,12 +53,11 @@ abstract class $PostModelCopyWith<$Res> {
       int comments,
       dynamic bookmark,
       bool isShare,
-      PostModel? share,
+      dynamic share,
       String createdAt,
       String updatedAt});
 
   $UserCopyWith<$Res> get user;
-  $PostModelCopyWith<$Res>? get share;
 }
 
 /// @nodoc
@@ -122,7 +121,7 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
       share: freezed == share
           ? _value.share
           : share // ignore: cast_nullable_to_non_nullable
-              as PostModel?,
+              as dynamic,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -139,18 +138,6 @@ class _$PostModelCopyWithImpl<$Res, $Val extends PostModel>
   $UserCopyWith<$Res> get user {
     return $UserCopyWith<$Res>(_value.user, (value) {
       return _then(_value.copyWith(user: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $PostModelCopyWith<$Res>? get share {
-    if (_value.share == null) {
-      return null;
-    }
-
-    return $PostModelCopyWith<$Res>(_value.share!, (value) {
-      return _then(_value.copyWith(share: value) as $Val);
     });
   }
 }
@@ -172,14 +159,12 @@ abstract class _$$PostModelImplCopyWith<$Res>
       int comments,
       dynamic bookmark,
       bool isShare,
-      PostModel? share,
+      dynamic share,
       String createdAt,
       String updatedAt});
 
   @override
   $UserCopyWith<$Res> get user;
-  @override
-  $PostModelCopyWith<$Res>? get share;
 }
 
 /// @nodoc
@@ -241,7 +226,7 @@ class __$$PostModelImplCopyWithImpl<$Res>
       share: freezed == share
           ? _value.share
           : share // ignore: cast_nullable_to_non_nullable
-              as PostModel?,
+              as dynamic,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -309,7 +294,7 @@ final class _$PostModelImpl implements _PostModel {
   @JsonKey()
   final bool isShare;
   @override
-  final PostModel? share;
+  final dynamic share;
   @override
   final String createdAt;
   @override
@@ -335,7 +320,7 @@ final class _$PostModelImpl implements _PostModel {
                 other.comments == comments) &&
             const DeepCollectionEquality().equals(other.bookmark, bookmark) &&
             (identical(other.isShare, isShare) || other.isShare == isShare) &&
-            (identical(other.share, share) || other.share == share) &&
+            const DeepCollectionEquality().equals(other.share, share) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -354,7 +339,7 @@ final class _$PostModelImpl implements _PostModel {
       comments,
       const DeepCollectionEquality().hash(bookmark),
       isShare,
-      share,
+      const DeepCollectionEquality().hash(share),
       createdAt,
       updatedAt);
 
@@ -382,7 +367,7 @@ abstract final class _PostModel implements PostModel {
       final int comments,
       final dynamic bookmark,
       final bool isShare,
-      required final PostModel? share,
+      required final dynamic share,
       required final String createdAt,
       required final String updatedAt}) = _$PostModelImpl;
 
@@ -407,7 +392,7 @@ abstract final class _PostModel implements PostModel {
   @override
   bool get isShare;
   @override
-  PostModel? get share;
+  dynamic get share;
   @override
   String get createdAt;
   @override

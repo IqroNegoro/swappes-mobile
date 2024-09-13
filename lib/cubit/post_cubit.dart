@@ -33,6 +33,23 @@ class PostCubit extends Cubit<PostState> {
     }
   }
 
+  Future<void> getPostsUser(String userId) async {
+    emit(state.copyWith(status: PostStatus.loading));
+    try {
+      List<PostModel> lists = [];
+
+      var posts = await Api.dio.get("users/$userId/posts");
+
+      for (var x in posts.data['data']) {
+        lists.add(PostModel.fromJson(x));
+      }
+
+      emit(state.copyWith(posts: lists, status: PostStatus.loaded));
+    } on DioException catch (e) {
+      emit(state.copyWith(error: e.error, status: PostStatus.error));
+    }
+  }
+
   Future<void> getPost(String id) async {
     if (state.status == PostStatus.creating) return;
     emit(state.copyWith(status: PostStatus.loading));
@@ -158,7 +175,8 @@ class PostCubit extends Cubit<PostState> {
     if (id.isEmpty) return;
     emit(state.copyWith(status: PostStatus.sharing));
     try {
-      var post = await Api.dio.post("posts", data: {"share": id, "description": description, "isShare": true});
+      var post = await Api.dio.post("posts",
+          data: {"share": id, "description": description, "isShare": true});
 
       emit(state.copyWith(status: PostStatus.loaded));
     } on DioException catch (e) {
