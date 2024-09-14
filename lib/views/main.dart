@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
+import 'package:swappes/ui/avatar.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
 
@@ -68,21 +69,7 @@ class MainPage extends StatelessWidget {
                     child: Consumer<Profile>(
                       builder: (context, value, _) => Row(
                         children: [
-                          CachedNetworkImage(
-                            imageUrl: value.avatar?.url ?? "",
-                            imageBuilder: (context, imageProvider) =>
-                                CircleAvatar(
-                              backgroundImage: imageProvider,
-                            ),
-                            errorWidget: (context, url, error) =>
-                                const CircleAvatar(
-                                    backgroundColor: Colors.black12),
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Skeletonizer(
-                              effect: PulseEffect(),
-                              child: Bone.circle(size: 2 * 20),
-                            ),
-                          ),
+                          AvatarUI(avatar: value.avatar!),
                           const SizedBox(width: 15),
                           Flexible(
                             flex: 1,

@@ -8,6 +8,7 @@ import "package:skeletonizer/skeletonizer.dart";
 import "package:swappes/cubit/post_cubit.dart";
 import "package:swappes/models/post.dart";
 import "package:swappes/providers/profile.dart";
+import "package:swappes/ui/avatar.dart";
 import "package:swappes/ui/post_comments.dart";
 import "package:swappes/ui/share_post.dart";
 import "package:swappes/ui/shared_post.dart";
@@ -27,25 +28,26 @@ class Post extends StatelessWidget {
           child: Row(
             children: [
               ElevatedButton(
-                onPressed: () => context
-                    .pushNamed("UserId", pathParameters: {"id": post.user.id}),
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(0),
-                    minimumSize: const Size(0, 0),
-                    backgroundColor: Colors.transparent),
-                child: CachedNetworkImage(
-                  imageUrl: post.user.avatar.url ?? "",
-                  imageBuilder: (context, imageProvider) => CircleAvatar(
-                    backgroundImage: imageProvider,
+                  onPressed: () => context.pushNamed("UserId",
+                      pathParameters: {"id": post.user.id}),
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(0),
+                      minimumSize: const Size(0, 0),
+                      backgroundColor: Colors.transparent),
+                  child: AvatarUI(avatar: post.user.avatar)
+                  // child: CachedNetworkImage(
+                  //   imageUrl: post.user.avatar.url ?? "",
+                  //   imageBuilder: (context, imageProvider) => CircleAvatar(
+                  //     backgroundImage: imageProvider,
+                  //   ),
+                  //   errorWidget: (context, url, error) =>
+                  //       const CircleAvatar(backgroundColor: Colors.black12),
+                  //   placeholder: (context, url) => const Skeletonizer(
+                  //     effect: PulseEffect(),
+                  //     child: Bone.circle(size: 2 * 20),
+                  //   ),
+                  // ),
                   ),
-                  errorWidget: (context, url, error) =>
-                      const CircleAvatar(backgroundColor: Colors.black12),
-                  placeholder: (context, url) => const Skeletonizer(
-                    effect: PulseEffect(),
-                    child: Bone.circle(size: 2 * 20),
-                  ),
-                ),
-              ),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -69,8 +69,11 @@ class NotificationsPage extends StatelessWidget {
                       imageBuilder: (context, imageProvider) => CircleAvatar(
                         backgroundImage: imageProvider,
                       ),
-                      errorWidget: (context, url, error) =>
-                          const CircleAvatar(backgroundColor: Colors.black12),
+                      errorWidget: (_, __, ___) => const CircleAvatar(
+                        backgroundImage: AssetImage(
+                          ("assets/images/default_profile.png"),
+                        ),
+                      ),
                       placeholder: (context, url) => const Skeletonizer(
                         effect: PulseEffect(),
                         child: Bone.circle(size: 2 * 20),

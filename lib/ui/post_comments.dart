@@ -197,66 +197,64 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
 
                   return true;
                 },
-                child: Stack(alignment: Alignment.bottomCenter, children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: BlocConsumer<CommentCubit, CommentState>(
-                      bloc: _getComments,
-                      listenWhen: (previous, current) => current.maybeWhen(
-                          orElse: () => true, deleteComment: (_) => false),
-                      listener: (context, state) {
-                        state.maybeWhen(
-                            error: (error) => ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "Something wrong, please try again",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                  showCloseIcon: true,
-                                  backgroundColor: Color(0xFF18191A),
-                                )),
-                            loaded: (_) {
-                              setState(() {
-                                _comment.text = "";
-                                _image = null;
-                              });
-                            },
-                            orElse: () {});
-                      },
-                      buildWhen: (previous, current) {
-                        return previous.maybeWhen(
-                                orElse: () => true,
-                                deleteComment: (_) => false) &&
-                            current.maybeWhen(
-                                orElse: () => true,
-                                postComment: (_) => false,
-                                deleteComment: (_) => false);
-                      },
-                      builder: (context, state) {
-                        return ListView(
-                            controller: scrollController,
-                            children: state.maybeWhen(
-                                orElse: () => List.generate(
-                                    3, (_) => const CommentSkeleton()),
-                                loaded: (comments) => comments.isEmpty
-                                    ? [
-                                        const Center(
-                                          child: Text(
-                                              "There is no comments in this post, be the first"),
-                                        )
-                                      ]
-                                    : List.generate(
-                                        comments.length,
-                                        (index) => CommentUI(comments[index],
-                                            handleDelete, replyComment)),
-                                error: (_) =>
-                                    [const Text("Error when load comment")]));
-                      },
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: BlocConsumer<CommentCubit, CommentState>(
+                    bloc: _getComments,
+                    listenWhen: (previous, current) => current.maybeWhen(
+                        orElse: () => true, deleteComment: (_) => false),
+                    listener: (context, state) {
+                      state.maybeWhen(
+                          error: (error) => ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  "Something wrong, please try again",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                showCloseIcon: true,
+                                backgroundColor: Color(0xFF18191A),
+                              )),
+                          loaded: (_) {
+                            setState(() {
+                              _comment.text = "";
+                              _image = null;
+                            });
+                          },
+                          orElse: () {});
+                    },
+                    buildWhen: (previous, current) {
+                      return previous.maybeWhen(
+                              orElse: () => true,
+                              deleteComment: (_) => false) &&
+                          current.maybeWhen(
+                              orElse: () => true,
+                              postComment: (_) => false,
+                              deleteComment: (_) => false);
+                    },
+                    builder: (context, state) {
+                      return ListView(
+                          controller: scrollController,
+                          children: state.maybeWhen(
+                              orElse: () => List.generate(
+                                  3, (_) => const CommentSkeleton()),
+                              loaded: (comments) => comments.isEmpty
+                                  ? [
+                                      const Center(
+                                        child: Text(
+                                            "There is no comments in this post, be the first"),
+                                      )
+                                    ]
+                                  : List.generate(
+                                      comments.length,
+                                      (index) => CommentUI(comments[index],
+                                          handleDelete, replyComment)),
+                              error: (_) =>
+                                  [const Text("Error when load comment")]));
+                    },
                   ),
-                ]),
+                ),
               ))
             ],
           ),

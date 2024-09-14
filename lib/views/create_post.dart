@@ -20,8 +20,9 @@ class CreatePostUI extends StatefulWidget {
 
 class _CreatePostUIState extends State<CreatePostUI> {
   final List<File> _images = [];
-  final picker = ImagePicker();
   TextEditingController description = TextEditingController();
+  
+  final picker = ImagePicker();
 
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);

@@ -8,8 +8,7 @@ enum FriendStatus { unfriend, friend }
 @freezed
 class UserFriend with _$UserFriend {
   factory UserFriend(
-      {
-      @JsonKey(name: "_id") required final String id,
+      {@JsonKey(name: "_id") required final String id,
       required final String name,
       required final dynamic avatar}) = _UserFriend;
 

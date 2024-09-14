@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,9 +48,13 @@ class _CommentUIState extends State<CommentUI> {
                   Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(2)),
-                        color: Colors.black12),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(2)),
+                        color: widget.comment.image != null &&
+                                widget.comment.comment == ""
+                            ? Colors.transparent
+                            : Colors.black12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

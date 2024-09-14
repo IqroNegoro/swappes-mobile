@@ -99,7 +99,7 @@ class MainApp extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
-              textButtonTheme: TextButtonThemeData(
+            textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
                     overlayColor: Colors.transparent,
                     disabledBackgroundColor: Colors.black54,
