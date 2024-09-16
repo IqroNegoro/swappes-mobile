@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:swappes/models/avatar.dart';
+import 'package:swappes/services/api.dart';
 import 'package:swappes/storage/storage.dart';
 
 class Profile with ChangeNotifier {
@@ -12,7 +15,10 @@ class Profile with ChangeNotifier {
   late Avatar? avatar;
   late Avatar? banner;
 
-  void saveUser(user) async {
+  bool isLoadingAvatar = false;
+  bool isLoadingBanner = false;
+
+  Future<void> saveUser(user) async {
     id = user['_id'] ?? id;
     name = user['name'] ?? name;
     email = user['email'] ?? email;
@@ -22,17 +28,17 @@ class Profile with ChangeNotifier {
     await Storage.save(
         "user",
         json.encode({
-          "id": user['id'],
-          "name": user['name'],
-          "email": user['email'],
-          "avatar": user['avatar'],
-          "banner": user['banner'],
+          "id": id,
+          "name": name,
+          "email": email,
+          "avatar": avatar,
+          "banner": banner,
         }));
 
     notifyListeners();
   }
 
-  void getUser() async {
+  Future<void> getUser() async {
     final String? user = await Storage.get("user");
 
     if (user != null) {
@@ -46,11 +52,46 @@ class Profile with ChangeNotifier {
   }
 
   Future<bool> updateAvatar(File image) async {
+    isLoadingAvatar = true;
+    notifyListeners();
     try {
-      
+      MultipartFile avatar = MultipartFile.fromFileSync(image.path,
+          filename: image.path.split("/").last);
+
+      final response = await Api.dio
+          .post("users/avatar", data: FormData.fromMap({"avatar": avatar}));
+
+      saveUser({'avatar': response.data['data']});
+      isLoadingAvatar = false;
+
+      notifyListeners();
+
+      return true;
+    } catch (error) {
+      isLoadingAvatar = false;
+      return false;
+    }
+  }
+
+  Future<bool> updateBanner(File image) async {
+    isLoadingBanner = true;
+    notifyListeners();
+    try {
+      MultipartFile banner = MultipartFile.fromFileSync(image.path,
+          filename: image.path.split("/").last);
+
+      final response = await Api.dio
+          .post("users/banner", data: FormData.fromMap({"banner": banner}));
+
+      saveUser({'banner': response.data['data']});
+
+      isLoadingBanner = false;
+
       notifyListeners();
       return true;
     } catch (error) {
+      isLoadingBanner = false;
+      log(error.toString());
       return false;
     }
   }

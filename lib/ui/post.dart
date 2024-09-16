@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
@@ -34,20 +36,7 @@ class Post extends StatelessWidget {
                       padding: const EdgeInsets.all(0),
                       minimumSize: const Size(0, 0),
                       backgroundColor: Colors.transparent),
-                  child: AvatarUI(avatar: post.user.avatar)
-                  // child: CachedNetworkImage(
-                  //   imageUrl: post.user.avatar.url ?? "",
-                  //   imageBuilder: (context, imageProvider) => CircleAvatar(
-                  //     backgroundImage: imageProvider,
-                  //   ),
-                  //   errorWidget: (context, url, error) =>
-                  //       const CircleAvatar(backgroundColor: Colors.black12),
-                  //   placeholder: (context, url) => const Skeletonizer(
-                  //     effect: PulseEffect(),
-                  //     child: Bone.circle(size: 2 * 20),
-                  //   ),
-                  // ),
-                  ),
+                  child: AvatarUI(avatar: post.user.avatar)),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,141 +63,140 @@ class Post extends StatelessWidget {
                 ],
               ),
               const Spacer(flex: 1),
-              // ElevatedButton(
-              //   onPressed: () {},
-              //   child: const Icon(Icons.more_horiz),
-              // ),
               ElevatedButton(
                 onPressed: () => showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
                   builder: (_) => Consumer<Profile>(
-                    builder: (_, value, child) => SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          value.id == post.user.id
-                              ? TextButton.icon(
-                                  onPressed: () {
-                                    context.pop();
-                                    context.pushNamed("EditPost",
-                                        pathParameters: {"id": post.id});
-                                  },
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      iconColor: Colors.black),
-                                  label: const Text("Edit Post",
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500)),
-                                  icon: const Icon(Icons.edit),
-                                )
-                              : const SizedBox(),
-                          TextButton.icon(
-                            onPressed: () async => await Clipboard.setData(
-                                    ClipboardData(
-                                        text:
-                                            "https://swappes.netlify.app/posts/${post.id}"))
-                                .then((_) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  "Copied!",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                                showCloseIcon: true,
-                                backgroundColor: Color(0xFF18191A),
-                              ));
-                              context.pop();
-                            }),
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.transparent,
-                                iconColor: Colors.black),
-                            label: const Text("Copy Link",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500)),
-                            icon: const Icon(Icons.link),
-                          ),
-                          BlocConsumer<PostCubit, PostState>(
-                            listener: (_, state) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  state.status == PostStatus.saving
-                                      ? "Saving..."
-                                      : state.status == PostStatus.deleting
-                                          ? "Deleting..."
-                                          : "Succees",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                showCloseIcon: true,
-                                backgroundColor: const Color(0xFF18191A),
-                              ));
-                              if (state.status == PostStatus.loaded) {
+                    builder: (_, value, child) {
+                      return SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            value.id == post.user.id
+                                ? TextButton.icon(
+                                    onPressed: () {
+                                      context.pop();
+                                      context.pushNamed("EditPost",
+                                          pathParameters: {"id": post.id});
+                                    },
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        iconColor: Colors.black),
+                                    label: const Text("Edit Post",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                    icon: const Icon(Icons.edit),
+                                  )
+                                : const SizedBox(),
+                            TextButton.icon(
+                              onPressed: () async => await Clipboard.setData(
+                                      ClipboardData(
+                                          text:
+                                              "https://swappes.netlify.app/posts/${post.id}"))
+                                  .then((_) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    "Copied!",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  showCloseIcon: true,
+                                  backgroundColor: Color(0xFF18191A),
+                                ));
                                 context.pop();
-                              }
-                            },
-                            builder: (context, state) {
-                              return TextButton.icon(
-                                  onPressed: () => post.bookmark == null
-                                      ? context
-                                          .read<PostCubit>()
-                                          .savePost(post.id)
-                                      : context
-                                          .read<PostCubit>()
-                                          .deleteSavedPost(post.id),
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      iconColor: Colors.black),
-                                  label: Text(
-                                      post.bookmark == null ? "Save" : "Saved",
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500)),
-                                  icon: Icon(state.posts
-                                              .firstWhere((element) =>
-                                                  element.id == post.id)
-                                              .bookmark !=
-                                          null
-                                      ? Icons.bookmark_remove
-                                      : Icons.bookmark_add)
-                                  // listener: (_, state) {
+                              }),
+                              style: TextButton.styleFrom(
+                                  backgroundColor: Colors.transparent,
+                                  iconColor: Colors.black),
+                              label: const Text("Copy Link",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                              icon: const Icon(Icons.link),
+                            ),
+                            BlocConsumer<PostCubit, PostState>(
+                              listener: (_, state) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    state.status == PostStatus.saving
+                                        ? "Saving..."
+                                        : state.status == PostStatus.deleting
+                                            ? "Deleting..."
+                                            : "Succees",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  showCloseIcon: true,
+                                  backgroundColor: const Color(0xFF18191A),
+                                ));
+                                if (state.status == PostStatus.loaded) {
+                                  context.pop();
+                                }
+                              },
+                              builder: (context, state) {
+                                return TextButton.icon(
+                                    onPressed: () => post.bookmark == null
+                                        ? context
+                                            .read<PostCubit>()
+                                            .savePost(post.id)
+                                        : context
+                                            .read<PostCubit>()
+                                            .deleteSavedPost(post.id),
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        iconColor: Colors.black),
+                                    label:
+                                        Text(post.bookmark == null ? "Save" : "Saved",
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500)),
+                                    icon: Icon(state.posts
+                                                .firstWhere((element) =>
+                                                    element.id == post.id)
+                                                .bookmark !=
+                                            null
+                                        ? Icons.bookmark_remove
+                                        : Icons.bookmark_add)
+                                    // listener: (_, state) {
 
-                                  // },
-                                  );
-                            },
-                          ),
-                          value.id == post.user.id
-                              ? TextButton.icon(
-                                  onPressed: () {
-                                    context
-                                        .read<PostCubit>()
-                                        .deletePost(post.id);
-                                    context.pop();
-                                  },
-                                  style: TextButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      iconColor: Colors.red),
-                                  label: const Text("Delete",
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500)),
-                                  icon: const Icon(Icons.delete),
-                                )
-                              : const SizedBox()
-                        ],
-                      ),
-                    ),
+                                    // },
+                                    );
+                              },
+                            ),
+                            value.id == post.user.id
+                                ? TextButton.icon(
+                                    onPressed: () {
+                                      context
+                                          .read<PostCubit>()
+                                          .deletePost(post.id);
+                                      context.pop();
+                                    },
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        iconColor: Colors.red),
+                                    label: const Text("Delete",
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500)),
+                                    icon: const Icon(Icons.delete),
+                                  )
+                                : const SizedBox()
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
                 child: const Icon(Icons.more_horiz),

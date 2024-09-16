@@ -14,6 +14,7 @@ import 'package:swappes/models/friend.dart';
 import 'package:swappes/models/user.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/services/api.dart';
+import 'package:swappes/ui/app_bar.dart';
 import 'package:swappes/ui/avatar.dart';
 import 'package:swappes/ui/friend.skeleton.dart';
 import 'package:swappes/ui/post.dart';
@@ -58,19 +59,7 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Swappes"),
-        backgroundColor: const Color.fromARGB(255, 241, 241, 241),
-        surfaceTintColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        actions: [
-          ElevatedButton(
-            onPressed: () {},
-            child: Consumer<Profile>(
-                builder: (__, value, _) => AvatarUI(avatar: value.avatar!)),
-          )
-        ],
-      ),
+      appBar: AppBarUI(back: false),
       body: ListView(
         cacheExtent: 9999,
         children: [
@@ -85,7 +74,7 @@ class _UserPageState extends State<UserPage> {
                           banner: snapshot.data?.banner,
                         ),
                         Transform.translate(
-                          offset: const Offset(0, -100),
+                          offset: const Offset(0, -50),
                           child: Column(
                             children: [
                               UserAvatar(
@@ -303,13 +292,13 @@ class _UserPageState extends State<UserPage> {
           ),
           BlocBuilder<PostCubit, PostState>(
             bloc: _event,
-            buildWhen: (previous, current) =>
-                current.status != PostStatus.creating &&
-                current.status != PostStatus.liking &&
-                current.status != PostStatus.showComment &&
-                current.status != PostStatus.saving &&
-                current.status != PostStatus.deleting &&
-                current.status != PostStatus.sharing,
+            // buildWhen: (previous, current) =>
+            // current.status != PostStatus.creating &&
+            // current.status != PostStatus.liking &&
+            // current.status != PostStatus.showComment &&
+            // current.status != PostStatus.saving &&
+            // current.status != PostStatus.deleting &&
+            // current.status != PostStatus.sharing,
             builder: (context, state) {
               if (state.status == PostStatus.loading) {
                 return const PostSkeleton();
@@ -374,9 +363,59 @@ class _UserAvatarState extends State<UserAvatar> {
             if (_avatar != null && context.mounted) {
               showModalBottomSheet(
                 context: context,
-                backgroundColor: Colors.transparent,
-                builder: (context) => const Row(
-                  children
+                backgroundColor: Colors.white,
+                barrierColor: Colors.transparent,
+                builder: (context) => Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text("Change profile picture?",
+                          style: TextStyle(fontSize: 20)),
+                      const SizedBox(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              child: const Text("Cancel",
+                                  style: TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                setState(() {
+                                  _avatar = null;
+                                  context.pop();
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 20),
+                            TextButton(
+                              onPressed: () {
+                                context
+                                    .read<Profile>()
+                                    .updateAvatar(_avatar!)
+                                    .then((value) {
+                                  context.pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        value
+                                            ? 'Profile picture changed'
+                                            : 'Error, try again',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      showCloseIcon: true,
+                                      backgroundColor: const Color(0xFF18191A),
+                                    ),
+                                  );
+                                });
+                              },
+                              child: const Text("Upload",
+                                  style: TextStyle(color: Colors.white)),
+                            )
+                          ]),
+                    ],
+                  ),
                 ),
               );
             }
@@ -426,6 +465,8 @@ class _UserBannerState extends State<UserBanner> {
   File? _banner;
   final picker = ImagePicker();
 
+  bool isLoading = false;
+
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -452,6 +493,7 @@ class _UserBannerState extends State<UserBanner> {
                       fit: BoxFit.cover,
                     )
                   : CachedNetworkImage(
+                      cacheKey: widget.banner?['url'],
                       imageUrl: widget.banner?['url'] ?? "",
                       placeholder: (_, url) => const Skeletonizer(
                         effect: PulseEffect(),
@@ -469,9 +511,18 @@ class _UserBannerState extends State<UserBanner> {
                 ? Column(
                     children: [
                       TextButton(
-                        child: const Text("Upload",
-                            style: TextStyle(color: Colors.white)),
-                        onPressed: () {},
+                        child: Selector<Profile, bool>(
+                          selector: (_, value) => value.isLoadingBanner,
+                          builder: (_, value, __) => Text(
+                              value ? "Uploading" : "Upload",
+                              style: const TextStyle(color: Colors.white)),
+                        ),
+                        onPressed: () {
+                          context
+                              .read<Profile>()
+                              .updateBanner(_banner!)
+                              .then((value) => value ? _banner = null : "");
+                        },
                       ),
                       const SizedBox(height: 10),
                       TextButton(

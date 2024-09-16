@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:swappes/cubit/auth_cubit.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
+import 'package:swappes/ui/app_bar.dart';
 import 'package:swappes/ui/avatar.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
@@ -16,34 +20,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Swappes"),
-        backgroundColor: const Color.fromARGB(255, 241, 241, 241),
-        surfaceTintColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () => context.pushNamed("NotificationsPage"),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: Consumer<Profile>(
-              builder: (context, value, _) => CachedNetworkImage(
-                imageUrl: value.avatar?.url ?? "",
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
-                errorWidget: (context, url, error) =>
-                    const CircleAvatar(backgroundColor: Colors.black12),
-                placeholder: (context, url) => const Skeletonizer(
-                  effect: PulseEffect(),
-                  child: Bone.circle(size: 2 * 20),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
+      appBar: AppBarUI(),
       body: Stack(
         children: [
           RefreshIndicator(

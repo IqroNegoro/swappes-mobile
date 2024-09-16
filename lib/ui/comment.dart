@@ -7,7 +7,7 @@ import 'package:swappes/providers/profile.dart';
 
 class CommentUI extends StatefulWidget {
   final CommentModel comment;
-  final Function(String commentId) handleDelete;
+  final Function(String commentId, String? replyId) handleDelete;
   final Function(CommentModel comment) replyComment;
 
   const CommentUI(this.comment, this.handleDelete, this.replyComment,
@@ -126,8 +126,8 @@ class _CommentUIState extends State<CommentUI> {
                             ),
                             child: const Text("Delete",
                                 style: TextStyle(color: Colors.black)),
-                            onPressed: () =>
-                                widget.handleDelete(widget.comment.id),
+                            onPressed: () => widget.handleDelete(
+                                widget.comment.id, widget.comment.replyId),
                           ),
                         ),
                       ],

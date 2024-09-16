@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import "package:flutter_animate/flutter_animate.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,8 +17,6 @@ class SplashScreenUI extends StatelessWidget {
           child: BlocListener<AuthCubit, AuthState>(
             bloc: AuthCubit()..checkAuthenticated(),
             listener: (context, state) {
-              log("checking...");
-              log(state.toString());
               state.maybeWhen(
                   success: (user) {
                     context.read<Profile>().saveUser(user);

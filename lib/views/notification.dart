@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/notification_cubit.dart';
-import 'package:swappes/providers/profile.dart';
+import 'package:swappes/ui/app_bar.dart';
 import 'package:swappes/ui/notification_skeleton.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -15,103 +13,102 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text("Notifications"),
-        backgroundColor: const Color.fromARGB(255, 241, 241, 241),
-        surfaceTintColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () => context.pushNamed("NotificationsPage"),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            child: Consumer<Profile>(
-              builder: (context, value, _) => CachedNetworkImage(
-                imageUrl: value.avatar?.url ?? "",
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
-                errorWidget: (context, url, error) =>
-                    const CircleAvatar(backgroundColor: Colors.black12),
-                placeholder: (context, url) => const Skeletonizer(
-                  effect: PulseEffect(),
-                  child: Bone.circle(size: 2 * 20),
-                ),
-              ),
+      appBar: AppBarUI(title: "Notifications", back: false),
+      body: RefreshIndicator(
+        onRefresh: () => context.read<NotificationCubit>().getNotifications(),
+        child: BlocBuilder<NotificationCubit, NotificationState>(
+          builder: (context, state) => state.maybeWhen(
+            orElse: () => Column(
+              children:
+                  List.generate(5, (index) => const NotificationSkeleton()),
             ),
-          )
-        ],
-      ),
-      body: BlocBuilder<NotificationCubit, NotificationState>(
-        builder: (context, state) => ListView(
-          children: state.maybeWhen(
-            orElse: () => List.generate(
-              5,
-              (index) => const NotificationSkeleton(),
+            error: (error) => Center(
+                child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Notifications Cannot Loaded",
+                    style: TextStyle(fontSize: 20)),
+                const SizedBox(height: 20),
+                TextButton(
+                    onPressed: () {
+                      context.read<NotificationCubit>().getNotifications();
+                    },
+                    child: const Text("Try Again",
+                        style: TextStyle(color: Colors.white)))
+              ],
+            )),
+            loading: () => ListView(
+              children:
+                  List.generate(10, (index) => const NotificationSkeleton()),
             ),
-            error: (error) => [const Text("Notifications Cannot Loaded")],
-            loading: () => [const CircularProgressIndicator()],
-            loaded: (notifications) => List.generate(
-              notifications.length,
-              (index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 10.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CachedNetworkImage(
-                      width: 70,
-                      height: 70,
-                      imageUrl:
-                          notifications[index].from['avatar']['url'] ?? "",
-                      imageBuilder: (context, imageProvider) => CircleAvatar(
-                        backgroundImage: imageProvider,
-                      ),
-                      errorWidget: (_, __, ___) => const CircleAvatar(
-                        backgroundImage: AssetImage(
-                          ("assets/images/default_profile.png"),
+            loaded: (notifications) => ListView(
+              children: List.generate(
+                notifications.length,
+                (index) => Container(
+                  color: notifications[index].isRead
+                      ? Colors.transparent
+                      : const Color.fromARGB(69, 120, 194, 255),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15.0, vertical: 10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CachedNetworkImage(
+                          width: 70,
+                          height: 70,
+                          imageUrl:
+                              notifications[index].from['avatar']['url'] ?? "",
+                          imageBuilder: (context, imageProvider) =>
+                              CircleAvatar(
+                            backgroundImage: imageProvider,
+                          ),
+                          errorWidget: (_, __, ___) => const CircleAvatar(
+                            backgroundImage: AssetImage(
+                              ("assets/images/default_profile.png"),
+                            ),
+                          ),
+                          placeholder: (context, url) => const Skeletonizer(
+                            effect: PulseEffect(),
+                            child: Bone.circle(size: 2 * 20),
+                          ),
                         ),
-                      ),
-                      placeholder: (context, url) => const Skeletonizer(
-                        effect: PulseEffect(),
-                        child: Bone.circle(size: 2 * 20),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Wrap(
+                        const SizedBox(width: 15),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${notifications[index].from['name']} ",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 16),
+                              Wrap(
+                                children: [
+                                  Text(
+                                    "${notifications[index].from['name']} ",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                  ),
+                                  Text(
+                                    "${notifications[index].content} ",
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    "${notifications[index].post['description']} ",
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${notifications[index].content} ",
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                "${notifications[index].post['description']} ",
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Text(timeago
+                                  .format(DateTime.parse(
+                                      notifications[index].createdAt))
+                                  .toString())
                             ],
                           ),
-                          Text(timeago
-                              .format(DateTime.parse(
-                                  notifications[index].createdAt))
-                              .toString())
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

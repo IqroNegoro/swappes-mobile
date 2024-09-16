@@ -10,16 +10,19 @@ part 'notification_cubit.freezed.dart';
 class NotificationCubit extends Cubit<NotificationState> {
   NotificationCubit() : super(const NotificationState.initial());
 
-  List<NotificationModel> notifications = [];
+  List<NotificationModel> allNotifications = [];
 
   Future<void> getNotifications() async {
     emit(const NotificationState.loading());
+    List<NotificationModel> notifications = [];
     try {
       final data = await Api.dio.get("notifications");
 
       for (var notification in data.data['data']) {
         notifications.add(NotificationModel.fromJson(notification));
       }
+
+      allNotifications = notifications;
 
       emit(NotificationState.loaded(notifications));
     } on DioException catch (error) {

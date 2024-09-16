@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:swappes/providers/profile.dart';
 import 'package:swappes/services/api.dart';
 import 'package:swappes/storage/storage.dart';
 
@@ -44,6 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthState.loading());
     try {
       final check = await Api.dio.get("info");
+      
       emit(AuthState.success(user: check.data));
     } catch (error) {
       emit(AuthState.error(error));

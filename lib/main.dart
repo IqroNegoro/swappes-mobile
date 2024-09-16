@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,47 +21,49 @@ import 'package:swappes/views/register.dart';
 import 'package:swappes/views/user.dart';
 import "package:timeago/timeago.dart" as timeago;
 
-final GoRouter _router =
-    GoRouter(initialLocation: "/loading", debugLogDiagnostics: true, routes: [
-  GoRoute(
-    path: "/loading",
-    name: "SplashPage",
-    builder: (context, state) => const SplashScreenUI(),
-  ),
-  GoRoute(
-      path: "/register",
-      name: "RegisterPage",
-      builder: (context, state) => RegisterPage()),
-  GoRoute(
-      path: "/login",
-      name: "LoginPage",
-      builder: (context, state) => LoginPage()),
-  GoRoute(
-    path: "/",
-    name: "MainPage",
-    builder: (context, state) => const MainPage(),
-  ),
-  GoRoute(
-    path: "/notifications",
-    name: "NotificationsPage",
-    builder: (context, state) => const NotificationsPage(),
-  ),
-  GoRoute(
-    path: "/create",
-    name: "CreatePost",
-    builder: (context, state) => const CreatePostUI(),
-  ),
-  GoRoute(
-    path: "/edit/:id",
-    name: "EditPost",
-    builder: (context, state) => EditPostUI(state.pathParameters['id']!),
-  ),
-  GoRoute(
-    path: "/users/:id",
-    name: "UserId",
-    builder: (context, state) => UserPage(state.pathParameters['id']!),
-  ),
-]);
+final GoRouter _router = GoRouter(
+    initialLocation: "/loading",
+    debugLogDiagnostics: true,
+    routes: [
+      GoRoute(
+        path: "/loading",
+        name: "SplashPage",
+        builder: (context, state) => const SplashScreenUI(),
+      ),
+      GoRoute(
+          path: "/register",
+          name: "RegisterPage",
+          builder: (context, state) => RegisterPage()),
+      GoRoute(
+          path: "/login",
+          name: "LoginPage",
+          builder: (context, state) => LoginPage()),
+      GoRoute(
+        path: "/",
+        name: "MainPage",
+        builder: (context, state) => const MainPage(),
+      ),
+      GoRoute(
+        path: "/notifications",
+        name: "NotificationsPage",
+        builder: (context, state) => const NotificationsPage(),
+      ),
+      GoRoute(
+        path: "/create",
+        name: "CreatePost",
+        builder: (context, state) => const CreatePostUI(),
+      ),
+      GoRoute(
+        path: "/edit/:id",
+        name: "EditPost",
+        builder: (context, state) => EditPostUI(state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: "/users/:id",
+        name: "UserId",
+        builder: (context, state) => UserPage(state.pathParameters['id']!),
+      ),
+    ]);
 void main() async {
   timeago.setLocaleMessages("id", timeago.IdMessages());
   runApp(ChangeNotifierProvider(
@@ -67,7 +73,7 @@ void main() async {
                 create: (_) => PostCubit()..getPosts(),
               ),
               BlocProvider(
-                create: (_) => AuthCubit(),
+                create: (_) => AuthCubit()..checkAuthenticated(),
               ),
               BlocProvider(
                 create: (_) => NotificationCubit()..getNotifications(),
@@ -99,7 +105,7 @@ class MainApp extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent)),
                   border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
-            textButtonTheme: TextButtonThemeData(
+              textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
                     overlayColor: Colors.transparent,
                     disabledBackgroundColor: Colors.black54,

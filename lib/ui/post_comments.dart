@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -49,8 +50,8 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
     });
   }
 
-  void handleDelete(String commentId) =>
-      _cubit.deleteComment(commentId, widget.id, replying?.id);
+  void handleDelete(String commentId, String? replyId) =>
+      _cubit.deleteComment(commentId, widget.id, replyId);
 
   void handleReply() =>
       _cubit.replyComment(widget.id, _comment.text, _image, replying!.id);
@@ -74,19 +75,6 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text("Replying to ${replying!.user.name}, "),
-                      // TextButton(
-                      //   style: TextButton.styleFrom(
-                      //     // backgroundColor: Colors.transparent,
-                      //     padding: const EdgeInsets.all(0),
-                      //   ),
-                      //   child: const Text("Cancel",
-                      //       style: TextStyle(
-                      //           fontWeight: FontWeight.w600,
-                      //           color: Colors.black)),
-                      //   onPressed: () {
-                      //     setState(() => replying = null);
-                      //   },
-                      // ),
                       GestureDetector(
                         onTap: () => setState(() {
                           replying = null;
@@ -205,17 +193,6 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                         orElse: () => true, deleteComment: (_) => false),
                     listener: (context, state) {
                       state.maybeWhen(
-                          error: (error) => ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  "Something wrong, please try again",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                                showCloseIcon: true,
-                                backgroundColor: Color(0xFF18191A),
-                              )),
                           loaded: (_) {
                             setState(() {
                               _comment.text = "";
@@ -234,24 +211,36 @@ class _PostCommentsUIState extends State<PostCommentsUI> {
                               deleteComment: (_) => false);
                     },
                     builder: (context, state) {
-                      return ListView(
-                          controller: scrollController,
-                          children: state.maybeWhen(
-                              orElse: () => List.generate(
-                                  3, (_) => const CommentSkeleton()),
-                              loaded: (comments) => comments.isEmpty
-                                  ? [
-                                      const Center(
-                                        child: Text(
-                                            "There is no comments in this post, be the first"),
-                                      )
-                                    ]
-                                  : List.generate(
+                      return state.maybeWhen(
+                          orElse: () => ListView(
+                              children: List.generate(
+                                  5, (_) => const CommentSkeleton())),
+                          loaded: (comments) => comments.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                      "There is no comments in this post, be the first"),
+                                )
+                              : ListView(
+                                  controller: scrollController,
+                                  children: List.generate(
                                       comments.length,
                                       (index) => CommentUI(comments[index],
-                                          handleDelete, replyComment)),
-                              error: (_) =>
-                                  [const Text("Error when load comment")]));
+                                          handleDelete, replyComment))),
+                          error: (_) => Center(
+                                  child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("Error when load comment",
+                                      style: TextStyle(fontSize: 20)),
+                                  const SizedBox(height: 20),
+                                  TextButton(
+                                      onPressed: () =>
+                                          _cubit.getComments(widget.id),
+                                      child: const Text("Try Again",
+                                          style:
+                                              TextStyle(color: Colors.white)))
+                                ],
+                              )));
                     },
                   ),
                 ),
