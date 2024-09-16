@@ -14,6 +14,7 @@ import 'package:swappes/models/friend.dart';
 import 'package:swappes/models/user.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/services/api.dart';
+import 'package:swappes/ui/avatar.dart';
 import 'package:swappes/ui/friend.skeleton.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
@@ -66,19 +67,7 @@ class _UserPageState extends State<UserPage> {
           ElevatedButton(
             onPressed: () {},
             child: Consumer<Profile>(
-              builder: (context, value, _) => CachedNetworkImage(
-                imageUrl: value.avatar?.url ?? "",
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  backgroundImage: imageProvider,
-                ),
-                errorWidget: (context, url, error) =>
-                    const CircleAvatar(backgroundColor: Colors.black12),
-                placeholder: (context, url) => const Skeletonizer(
-                  effect: PulseEffect(),
-                  child: Bone.circle(size: 2 * 20),
-                ),
-              ),
-            ),
+                builder: (__, value, _) => AvatarUI(avatar: value.avatar!)),
           )
         ],
       ),
@@ -91,21 +80,9 @@ class _UserPageState extends State<UserPage> {
               return snapshot.hasData
                   ? Column(
                       children: [
-                        AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: CachedNetworkImage(
-                            imageUrl: snapshot.data?.banner['url'] ?? "",
-                            placeholder: (_, url) => const Skeletonizer(
-                              effect: PulseEffect(),
-                              child: Bone.square(
-                                size: double.infinity,
-                              ),
-                            ),
-                            errorWidget: (_, __, ___) => Container(
-                              color: Colors.black38,
-                            ),
-                            fit: BoxFit.cover,
-                          ),
+                        UserBanner(
+                          userId: widget.userId,
+                          banner: snapshot.data?.banner,
                         ),
                         Transform.translate(
                           offset: const Offset(0, -100),
@@ -383,15 +360,34 @@ class _UserAvatarState extends State<UserAvatar> {
   Widget build(BuildContext context) {
     return Consumer<Profile>(
       builder: (_, value, __) => GestureDetector(
-        onTap: () {
-          value.id == widget.userId ? getImageFromGallery() : false;
+        onTap: () async {
+          if (value.id == widget.userId) {
+            final pickedFile =
+                await picker.pickImage(source: ImageSource.gallery);
+
+            if (pickedFile != null) {
+              setState(() {
+                _avatar = File(pickedFile.path);
+              });
+            }
+
+            if (_avatar != null && context.mounted) {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (context) => const Row(
+                  children
+                ),
+              );
+            }
+          }
         },
         child: _avatar != null
             ? ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(9999)),
+                borderRadius: const BorderRadius.all(Radius.circular(9999)),
                 child: Image.file(
-                  fit: BoxFit.cover,
                   _avatar!,
+                  fit: BoxFit.cover,
                   width: 150,
                   height: 150,
                 ),
@@ -412,6 +408,84 @@ class _UserAvatarState extends State<UserAvatar> {
                   child: Bone.circle(size: 2 * 20),
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class UserBanner extends StatefulWidget {
+  final String userId;
+  final dynamic banner;
+  const UserBanner({required this.userId, this.banner, super.key});
+
+  @override
+  State<UserBanner> createState() => _UserBannerState();
+}
+
+class _UserBannerState extends State<UserBanner> {
+  File? _banner;
+  final picker = ImagePicker();
+
+  Future getImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _banner = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Profile>(
+      builder: (_, value, __) => GestureDetector(
+        onTap: () => value.id == widget.userId ? getImageFromGallery() : false,
+        child: Stack(
+          alignment: const Alignment(0.95, 0.9),
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: _banner != null
+                  ? Image.file(
+                      _banner!,
+                      fit: BoxFit.cover,
+                    )
+                  : CachedNetworkImage(
+                      imageUrl: widget.banner?['url'] ?? "",
+                      placeholder: (_, url) => const Skeletonizer(
+                        effect: PulseEffect(),
+                        child: Bone.square(
+                          size: double.infinity,
+                        ),
+                      ),
+                      errorWidget: (_, __, ___) => Container(
+                        color: Colors.black38,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            _banner != null
+                ? Column(
+                    children: [
+                      TextButton(
+                        child: const Text("Upload",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () {},
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        child: const Text("Cancel",
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: () => setState(() {
+                          _banner = null;
+                        }),
+                      ),
+                    ],
+                  )
+                : const SizedBox()
+          ],
+        ),
       ),
     );
   }

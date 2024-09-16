@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:swappes/models/avatar.dart';
@@ -41,6 +42,16 @@ class Profile with ChangeNotifier {
       email = decode['email'];
       avatar = Avatar.fromJson(decode['avatar']);
       banner = Avatar.fromJson(decode['banner']);
+    }
+  }
+
+  Future<bool> updateAvatar(File image) async {
+    try {
+      
+      notifyListeners();
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 }
