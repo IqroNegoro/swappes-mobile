@@ -12,6 +12,7 @@ class NotificationModel with _$NotificationModel {
       final dynamic post,
       required final String content,
       @Default(false) final bool isRead,
+      required final String type,
       required final String createdAt,
       required final String updatedAt}) = _NotificationModel;
 

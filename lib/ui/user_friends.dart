@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:swappes/cubit/friend_cubit.dart';
 import 'package:swappes/providers/profile.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class UserFriendsUI extends StatefulWidget {
   final String id;
@@ -111,11 +110,12 @@ class UserFriendsUIState extends State<UserFriendsUI> {
                                                   backgroundImage:
                                                       imageProvider,
                                                 ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const CircleAvatar(
-                                                            backgroundColor:
-                                                                Colors.black12),
+                                                errorWidget: (_, __, ___) =>
+                                                    const CircleAvatar(
+                                                  backgroundImage: AssetImage(
+                                                    ("assets/images/default_profile.png"),
+                                                  ),
+                                                ),
                                                 placeholder: (context, url) =>
                                                     const Skeletonizer(
                                                   effect: PulseEffect(),

@@ -1,5 +1,3 @@
-import "dart:developer";
-
 import "package:cached_network_image/cached_network_image.dart";
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
@@ -215,46 +213,50 @@ class Post extends StatelessWidget {
                     height: 100,
                     child: Center(child: Text("Shared Post Cannot Loaded")))
                 : SharedPostUI(post: post.share ?? "")
-            : GridView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: MediaQuery.sizeOf(context).width /
-                      (post.images.length == 1
-                          ? 1
-                          : post.images.length > 1
-                              ? 2
-                              : 1),
-                  crossAxisSpacing: 2,
-                  mainAxisSpacing: 2,
-                ),
-                children: List.generate(
-                  post.images.length,
-                  (index) => ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: post.images.isEmpty || index == 0
-                          ? const Radius.circular(12)
-                          : const Radius.circular(0),
-                      topRight:
-                          post.images.isNotEmpty && (post.images.length == 1)
-                              ? const Radius.circular(12)
-                              : post.images.length > 1 && index == 1
-                                  ? const Radius.circular(12)
-                                  : const Radius.circular(0),
-                    ),
-                    child: CachedNetworkImage(
-                      cacheKey: post.images[index]['discordId'],
-                      imageUrl: post.images[index]['images'],
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.black12,
-                        child:
-                            const Center(child: Text("Image Cannot Displayed")),
+            : GestureDetector(
+                onTap: () => context
+                    .pushNamed("PostId", pathParameters: {"id": post.id}),
+                child: GridView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: MediaQuery.sizeOf(context).width /
+                        (post.images.length == 1
+                            ? 1
+                            : post.images.length > 1
+                                ? 2
+                                : 1),
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                  ),
+                  children: List.generate(
+                    post.images.length,
+                    (index) => ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: post.images.isEmpty || index == 0
+                            ? const Radius.circular(12)
+                            : const Radius.circular(0),
+                        topRight:
+                            post.images.isNotEmpty && (post.images.length == 1)
+                                ? const Radius.circular(12)
+                                : post.images.length > 1 && index == 1
+                                    ? const Radius.circular(12)
+                                    : const Radius.circular(0),
                       ),
-                      placeholder: (context, url) => const Skeletonizer(
-                        effect: PulseEffect(),
-                        child: Bone.square(
-                          size: double.infinity,
+                      child: CachedNetworkImage(
+                        cacheKey: post.images[index]['discordId'],
+                        imageUrl: post.images[index]['images'],
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Container(
+                          color: Colors.black12,
+                          child: const Center(
+                              child: Text("Image Cannot Displayed")),
+                        ),
+                        placeholder: (context, url) => const Skeletonizer(
+                          effect: PulseEffect(),
+                          child: Bone.square(
+                            size: double.infinity,
+                          ),
                         ),
                       ),
                     ),

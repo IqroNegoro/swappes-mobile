@@ -15,6 +15,7 @@ _$NotificationModelImpl _$$NotificationModelImplFromJson(
       post: json['post'],
       content: json['content'] as String,
       isRead: json['isRead'] as bool? ?? false,
+      type: json['type'] as String,
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
     );
@@ -28,6 +29,7 @@ Map<String, dynamic> _$$NotificationModelImplToJson(
       'post': instance.post,
       'content': instance.content,
       'isRead': instance.isRead,
+      'type': instance.type,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };

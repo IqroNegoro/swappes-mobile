@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,8 +16,6 @@ import 'package:swappes/models/user.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/services/api.dart';
 import 'package:swappes/ui/app_bar.dart';
-import 'package:swappes/ui/avatar.dart';
-import 'package:swappes/ui/friend.skeleton.dart';
 import 'package:swappes/ui/post.dart';
 import 'package:swappes/ui/post_skeleton.dart';
 import 'package:swappes/ui/user_friends.dart';
@@ -37,6 +36,7 @@ class _UserPageState extends State<UserPage> {
   Future<User> getUser() async {
     final data = await Api.dio.get("users/${widget.userId}");
     final User user = User.fromJson(data.data['data']);
+    log(user.toString());
     return user;
   }
 
@@ -98,35 +98,9 @@ class _UserPageState extends State<UserPage> {
                                   ),
                                   Text(snapshot.data!.friends.toString()),
                                   const SizedBox(height: 30),
-                                  Consumer<Profile>(
-                                    builder: (__, value, _) => value.id ==
-                                            widget.userId
-                                        ? const SizedBox()
-                                        : TextButton(
-                                            style: TextButton.styleFrom(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              padding: const EdgeInsets.all(0),
-                                            ),
-                                            onPressed: () {},
-                                            child: TextButton.icon(
-                                              style: const ButtonStyle(
-                                                  backgroundColor:
-                                                      WidgetStatePropertyAll(
-                                                          Colors.black),
-                                                  iconColor:
-                                                      WidgetStatePropertyAll(
-                                                          Colors.white)),
-                                              onPressed: () {},
-                                              label: const Text(
-                                                "Add Friend",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              icon:
-                                                  const Icon(Icons.person_add),
-                                            )),
-                                  )
+                                  FriendButton(
+                                      userId: widget.userId,
+                                      isFriend: snapshot.data!.isFriend)
                                 ],
                               ),
                               const SizedBox(height: 20),
@@ -228,16 +202,11 @@ class _UserPageState extends State<UserPage> {
                                                                     "",
                                                                 fit: BoxFit
                                                                     .cover,
-                                                                errorWidget: (context,
-                                                                        url,
-                                                                        error) =>
-                                                                    Container(
-                                                                  color: Colors
-                                                                      .black12,
-                                                                  child: const Center(
-                                                                      child: Text(
-                                                                          "Image Cannot Displayed")),
-                                                                ),
+                                                                errorWidget: (_,
+                                                                        __,
+                                                                        ___) =>
+                                                                    Image.asset(
+                                                                        "assets/images/default_profile.png"),
                                                                 placeholder: (context,
                                                                         url) =>
                                                                     const Skeletonizer(
@@ -293,12 +262,12 @@ class _UserPageState extends State<UserPage> {
           BlocBuilder<PostCubit, PostState>(
             bloc: _event,
             // buildWhen: (previous, current) =>
-            // current.status != PostStatus.creating &&
-            // current.status != PostStatus.liking &&
-            // current.status != PostStatus.showComment &&
-            // current.status != PostStatus.saving &&
-            // current.status != PostStatus.deleting &&
-            // current.status != PostStatus.sharing,
+            //     current.status != PostStatus.creating &&
+            //     current.status != PostStatus.liking &&
+            //     current.status != PostStatus.showComment &&
+            //     current.status != PostStatus.saving &&
+            //     current.status != PostStatus.deleting &&
+            //     current.status != PostStatus.sharing,
             builder: (context, state) {
               if (state.status == PostStatus.loading) {
                 return const PostSkeleton();
@@ -538,6 +507,119 @@ class _UserBannerState extends State<UserBanner> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class FriendButton extends StatefulWidget {
+  String userId;
+  Map<String, dynamic>? isFriend;
+  FriendButton({required this.userId, required this.isFriend, super.key});
+
+  @override
+  State<FriendButton> createState() => _FriendButtonState();
+}
+
+class _FriendButtonState extends State<FriendButton> {
+  dynamic data;
+  bool isLoading = false;
+
+  Future<void> addFriend() async {
+    Response response;
+    setState(() {
+      isLoading = false;
+    });
+    try {
+      response = await Api.dio.post("users/${widget.userId}/friends");
+
+      setState(() {
+        data = response.data['data'];
+        widget.isFriend = response.data['data'];
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> acceptFriend() async {
+    Response response;
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      response = await Api.dio.put("users/${widget.userId}/friends");
+
+      setState(() {
+        widget.isFriend!['status'] = response.data['data'];
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> deleteFriend() async {
+    Response response;
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      response = await Api.dio.delete("users/${widget.userId}/friends");
+
+      setState(() {
+        widget.isFriend = null;
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<Profile>(
+      builder: (__, value, _) => value.id == widget.userId
+          ? const SizedBox()
+          : TextButton.icon(
+              style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(15),
+                  backgroundColor: (widget.isFriend?['status']) == 0 ||
+                          (widget.isFriend?['status']) == 1 &&
+                              (widget.isFriend?['to']) == value.id
+                      ? Colors.blue.shade600
+                      : Colors.black,
+                  iconColor: Colors.white),
+              onPressed: isLoading
+                  ? null
+                  : () => widget.isFriend == null
+                      ? addFriend()
+                      : widget.isFriend!['status'] == 0 &&
+                              widget.isFriend!['to'] == value.id
+                          ? acceptFriend()
+                          : deleteFriend(),
+              label: Text(
+                widget.isFriend != null
+                    ? (widget.isFriend?['status']) == 0 &&
+                            (widget.isFriend?['to']) == value.id
+                        ? "Accept Friend"
+                        : (widget.isFriend?['status']) == 0
+                            ? "Cancel Request"
+                            : "Friend"
+                    : "Add Friend",
+                style: const TextStyle(color: Colors.white),
+              ),
+              icon: Icon(widget.isFriend != null
+                  ? ((widget.isFriend?['status']) == 0 &&
+                              (widget.isFriend?['to']) == value.id) ||
+                          (widget.isFriend?['status']) == 1
+                      ? Icons.check
+                      : Icons.person_remove
+                  : Icons.person_add),
+            ),
     );
   }
 }

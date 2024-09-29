@@ -1,8 +1,5 @@
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +16,7 @@ import 'package:swappes/views/main.dart';
 import 'package:swappes/views/notification.dart';
 import 'package:swappes/views/register.dart';
 import 'package:swappes/views/user.dart';
+import 'package:swappes/views/user_post.dart';
 import "package:timeago/timeago.dart" as timeago;
 
 final GoRouter _router = GoRouter(
@@ -57,6 +55,11 @@ final GoRouter _router = GoRouter(
         path: "/edit/:id",
         name: "EditPost",
         builder: (context, state) => EditPostUI(state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: "/posts/:id",
+        name: "PostId",
+        builder: (context, state) => UserPost(postId: state.pathParameters['id']!),
       ),
       GoRoute(
         path: "/users/:id",

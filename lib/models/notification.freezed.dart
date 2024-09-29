@@ -27,6 +27,7 @@ mixin _$NotificationModel {
   dynamic get post => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   bool get isRead => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -49,6 +50,7 @@ abstract class $NotificationModelCopyWith<$Res> {
       dynamic post,
       String content,
       bool isRead,
+      String type,
       String createdAt,
       String updatedAt});
 }
@@ -72,6 +74,7 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
     Object? post = freezed,
     Object? content = null,
     Object? isRead = null,
+    Object? type = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -100,6 +103,10 @@ class _$NotificationModelCopyWithImpl<$Res, $Val extends NotificationModel>
           ? _value.isRead
           : isRead // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -127,6 +134,7 @@ abstract class _$$NotificationModelImplCopyWith<$Res>
       dynamic post,
       String content,
       bool isRead,
+      String type,
       String createdAt,
       String updatedAt});
 }
@@ -148,6 +156,7 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
     Object? post = freezed,
     Object? content = null,
     Object? isRead = null,
+    Object? type = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -176,6 +185,10 @@ class __$$NotificationModelImplCopyWithImpl<$Res>
           ? _value.isRead
           : isRead // ignore: cast_nullable_to_non_nullable
               as bool,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -198,6 +211,7 @@ class _$NotificationModelImpl implements _NotificationModel {
       this.post,
       required this.content,
       this.isRead = false,
+      required this.type,
       required this.createdAt,
       required this.updatedAt})
       : _to = to;
@@ -226,13 +240,15 @@ class _$NotificationModelImpl implements _NotificationModel {
   @JsonKey()
   final bool isRead;
   @override
+  final String type;
+  @override
   final String createdAt;
   @override
   final String updatedAt;
 
   @override
   String toString() {
-    return 'NotificationModel(id: $id, to: $to, from: $from, post: $post, content: $content, isRead: $isRead, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'NotificationModel(id: $id, to: $to, from: $from, post: $post, content: $content, isRead: $isRead, type: $type, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -246,6 +262,7 @@ class _$NotificationModelImpl implements _NotificationModel {
             const DeepCollectionEquality().equals(other.post, post) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.isRead, isRead) || other.isRead == isRead) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -262,6 +279,7 @@ class _$NotificationModelImpl implements _NotificationModel {
       const DeepCollectionEquality().hash(post),
       content,
       isRead,
+      type,
       createdAt,
       updatedAt);
 
@@ -288,6 +306,7 @@ abstract class _NotificationModel implements NotificationModel {
       final dynamic post,
       required final String content,
       final bool isRead,
+      required final String type,
       required final String createdAt,
       required final String updatedAt}) = _$NotificationModelImpl;
 
@@ -307,6 +326,8 @@ abstract class _NotificationModel implements NotificationModel {
   String get content;
   @override
   bool get isRead;
+  @override
+  String get type;
   @override
   String get createdAt;
   @override

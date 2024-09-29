@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -19,6 +21,7 @@ class NotificationCubit extends Cubit<NotificationState> {
       final data = await Api.dio.get("notifications");
 
       for (var notification in data.data['data']) {
+        log(notification.toString());
         notifications.add(NotificationModel.fromJson(notification));
       }
 

@@ -1,12 +1,7 @@
-import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-import 'package:swappes/cubit/auth_cubit.dart';
 import 'package:swappes/cubit/post_cubit.dart';
 import 'package:swappes/providers/profile.dart';
 import 'package:swappes/ui/app_bar.dart';
@@ -38,9 +33,6 @@ class MainPage extends StatelessWidget {
               },
               child: ListView(
                 children: [
-                  ElevatedButton(
-                      onPressed: () => context.goNamed("LoginPage"),
-                      child: const Text("Balik lu")),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Consumer<Profile>(
